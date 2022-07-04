@@ -47,6 +47,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
             labelText: "Last Name",
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
+    final usernamefield = TextFormField(
+        autofocus: false,
+        controller: usernameEditingController,
+        keyboardType: TextInputType.text,
+        onSaved: (value) {
+          usernameEditingController.text = value!;
+        },
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+            prefixIcon: Icon(Icons.account_circle),
+            contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
+            labelText: "Username",
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
     final emailfield = TextFormField(
         autofocus: false,
         controller: emailEditingController,
@@ -61,20 +75,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             labelText: "Email",
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
-    final usernamefield = TextFormField(
-        autofocus: false,
-        controller: usernameEditingController,
-        keyboardType: TextInputType.text,
-        onSaved: (value) {
-          usernameEditingController.text = value!;
-        },
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-            prefixIcon: Icon(Icons.account_circle),
-            contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
-            hintText: "Username",
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
+    
     final passwordfield = TextFormField(
         autofocus: false,
         controller: passwordEditingController,
@@ -184,9 +185,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   SizedBox(height: 25),
                                   lastnamefield,
                                   SizedBox(height: 25),
-                                  emailfield,
-                                  SizedBox(height: 25),
                                   usernamefield,
+                                  SizedBox(height: 25),
+                                  emailfield,
+                                  
                                   SizedBox(height: 25),
                                   passwordfield,
                                   SizedBox(height: 25),
