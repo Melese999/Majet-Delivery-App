@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "757884806403",
+    "project_id": "majet-24",
+    "storage_bucket": "majet-24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757884806403:android:3acdd982a8709743e2f536",
+        "android_client_info": {
+          "package_name": "com.example.food_delivery_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "757884806403-r4718atpu4fceqk572ogvl307ts1ejgc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuTlj1RI9QBfJ34sYPQkiC6c5gtV-c430"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "757884806403-r4718atpu4fceqk572ogvl307ts1ejgc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
