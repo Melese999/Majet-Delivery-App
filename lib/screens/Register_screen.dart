@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:email_validator/email_validator.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -10,6 +11,32 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final database = FirebaseDatabase.instance.ref();
+  String _firstname = '';
+  String _lastname = '';
+  String _username = '';
+  String _email = '';
+  String _phone = '';
+  String _password = '';
+  Widget? buildNamefield() {
+    return null;
+  }
+
+  Widget? buildLastNamefield() {
+    return null;
+  }
+
+  Widget? buildUserNamefield() {
+    return null;
+  }
+
+  Widget? buildEmailfield() {
+    return null;
+  }
+
+  Widget? buildPasswordfield() {
+    return null;
+  }
+
   final _formkey = GlobalKey<FormState>();
   var firstNameEditingController = new TextEditingController();
   var lastNameEditingController = new TextEditingController();
@@ -17,22 +44,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
   var passwordEditingController = new TextEditingController();
   var confirmpasswordEditingController = new TextEditingController();
   var usernameEditingController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final firstnamefield = TextFormField(
-        autofocus: false,
-        controller: firstNameEditingController,
-        keyboardType: TextInputType.text,
-        onSaved: (value) {
-          firstNameEditingController.text = value!;
-        },
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-            prefixIcon: Icon(Icons.account_circle),
-            contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
-            labelText: 'First Name',
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
+      autofocus: false,
+      controller: firstNameEditingController,
+      keyboardType: TextInputType.text,
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+          prefixIcon: Icon(Icons.account_circle),
+          contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
+          labelText: 'First Name',
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+      validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter some text';
+              }
+              return null;
+            },
+      onSaved: (value) {
+        _firstname = value!;
+      },
+    );
     final lastnamefield = TextFormField(
         autofocus: false,
         controller: lastNameEditingController,
@@ -48,23 +82,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
     final usernamefield = TextFormField(
-        autofocus: false,
-        controller: usernameEditingController,
-        keyboardType: TextInputType.text,
-        onSaved: (value) {
-          usernameEditingController.text = value!;
-        },
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-            prefixIcon: Icon(Icons.account_circle),
-            contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
-            labelText: "Username",
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
+      autofocus: false,
+      controller: usernameEditingController,
+      keyboardType: TextInputType.text,
+      onSaved: (value) {
+        usernameEditingController.text = value!;
+      },
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+          prefixIcon: Icon(Icons.account_circle),
+          contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
+          labelText: "Username",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+       
+    );
     final emailfield = TextFormField(
         autofocus: false,
         controller: emailEditingController,
-        keyboardType: TextInputType.text,
+        keyboardType: TextInputType.emailAddress,
         onSaved: (value) {
           emailEditingController.text = value!;
         },
@@ -75,7 +110,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             labelText: "Email",
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
-    
+
     final passwordfield = TextFormField(
         autofocus: false,
         controller: passwordEditingController,
@@ -131,6 +166,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
       color: Color(0xffF96501),
       child: MaterialButton(
         onPressed: () {
+          
+          if (_formkey.currentState!.validate()) {
+                  // If the form is valid, display a snackbar. In the real world,
+                  // you'd often call a server or save the information in a database.
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Processing Data')),
+                  );
+                }
+          print(_firstname);
           if (firstNameEditingController.text.isNotEmpty &&
               lastNameEditingController.text.isNotEmpty &&
               emailEditingController.text.isNotEmpty &&
@@ -188,7 +232,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   usernamefield,
                                   SizedBox(height: 25),
                                   emailfield,
-                                  
                                   SizedBox(height: 25),
                                   passwordfield,
                                   SizedBox(height: 25),
@@ -202,9 +245,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         resetButton,
                                         SizedBox(height: 25),
                                         signupButton
-                                      ])
+                                      ]),
                                 ])))))));
   }
+
+  
 
   void insertedData(String firstname, String lastname, String username,
       String email, String password) {
