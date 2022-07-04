@@ -44,39 +44,44 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBfK7lfRYtJTqXejnm2RVXoQFxoT2gh9r8',
-    appId: '1:757884806403:web:a66474c6006f0618e2f536',
-    messagingSenderId: '757884806403',
-    projectId: 'majet-24',
-    authDomain: 'majet-24.firebaseapp.com',
-    storageBucket: 'majet-24.appspot.com',
+    apiKey: 'AIzaSyCHlngws9HA0vmciPwe4oLol9KILaurKkQ',
+    appId: '1:922524715807:web:31c0cfb446739208ffbe2a',
+    messagingSenderId: '922524715807',
+    projectId: 'fooddelivery-95ad8',
+    authDomain: 'fooddelivery-95ad8.firebaseapp.com',
+    databaseURL: 'https://fooddelivery-95ad8-default-rtdb.firebaseio.com',
+    storageBucket: 'fooddelivery-95ad8.appspot.com',
+    measurementId: 'G-KMQMDJDKER',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDuTlj1RI9QBfJ34sYPQkiC6c5gtV-c430',
-    appId: '1:757884806403:android:3acdd982a8709743e2f536',
-    messagingSenderId: '757884806403',
-    projectId: 'majet-24',
-    storageBucket: 'majet-24.appspot.com',
+    apiKey: 'AIzaSyCZCYE1lt857FzKhJneuS3Ac7LZgCiFzS4',
+    appId: '1:922524715807:android:beeb82ff53a93767ffbe2a',
+    messagingSenderId: '922524715807',
+    projectId: 'fooddelivery-95ad8',
+    databaseURL: 'https://fooddelivery-95ad8-default-rtdb.firebaseio.com',
+    storageBucket: 'fooddelivery-95ad8.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDUlac9zpR3ami2Zi6NbjMXCsE_70ezAcY',
-    appId: '1:757884806403:ios:838efe76af8e1cbfe2f536',
-    messagingSenderId: '757884806403',
-    projectId: 'majet-24',
-    storageBucket: 'majet-24.appspot.com',
-    iosClientId: '757884806403-np3knokjolnlmit4jvc9hob0gjm865cv.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDCmfMMpyp_5zBzwu20O57aXG_5Y2R5zNg',
+    appId: '1:922524715807:ios:8a2cb6f4d9789915ffbe2a',
+    messagingSenderId: '922524715807',
+    projectId: 'fooddelivery-95ad8',
+    databaseURL: 'https://fooddelivery-95ad8-default-rtdb.firebaseio.com',
+    storageBucket: 'fooddelivery-95ad8.appspot.com',
+    iosClientId: '922524715807-dmq4ge9onv1eridmqu5e0tlf80ef8c8e.apps.googleusercontent.com',
     iosBundleId: 'com.example.foodDeliveryApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDUlac9zpR3ami2Zi6NbjMXCsE_70ezAcY',
-    appId: '1:757884806403:ios:838efe76af8e1cbfe2f536',
-    messagingSenderId: '757884806403',
-    projectId: 'majet-24',
-    storageBucket: 'majet-24.appspot.com',
-    iosClientId: '757884806403-np3knokjolnlmit4jvc9hob0gjm865cv.apps.googleusercontent.com',
+    apiKey: 'AIzaSyDCmfMMpyp_5zBzwu20O57aXG_5Y2R5zNg',
+    appId: '1:922524715807:ios:8a2cb6f4d9789915ffbe2a',
+    messagingSenderId: '922524715807',
+    projectId: 'fooddelivery-95ad8',
+    databaseURL: 'https://fooddelivery-95ad8-default-rtdb.firebaseio.com',
+    storageBucket: 'fooddelivery-95ad8.appspot.com',
+    iosClientId: '922524715807-dmq4ge9onv1eridmqu5e0tlf80ef8c8e.apps.googleusercontent.com',
     iosBundleId: 'com.example.foodDeliveryApp',
   );
 }

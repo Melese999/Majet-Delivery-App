@@ -30,7 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         decoration: InputDecoration(
             prefixIcon: Icon(Icons.account_circle),
             contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
-            hintText: "email",
+            labelText: 'First Name',
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
     final lastnamefield = TextFormField(
@@ -44,7 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         decoration: InputDecoration(
             prefixIcon: Icon(Icons.account_circle),
             contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
-            hintText: "last name",
+            labelText: "Last Name",
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
     final emailfield = TextFormField(
@@ -58,7 +58,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         decoration: InputDecoration(
             prefixIcon: Icon(Icons.email),
             contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
-            hintText: "email",
+            labelText: "Email",
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
     final usernamefield = TextFormField(
@@ -70,9 +70,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-            prefixIcon: Icon(Icons.email),
+            prefixIcon: Icon(Icons.account_circle),
             contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
-            hintText: "username",
+            hintText: "Username",
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
     final passwordfield = TextFormField(
@@ -86,7 +86,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         decoration: InputDecoration(
             prefixIcon: Icon(Icons.vpn_key),
             contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
-            hintText: "password",
+            labelText: "password",
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
     final confirmpasswordfield = TextFormField(
@@ -100,7 +100,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         decoration: InputDecoration(
             prefixIcon: Icon(Icons.vpn_key),
             contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
-            hintText: "confirm password",
+            labelText: "Confirm Password",
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
     final resetButton = Material(
@@ -117,7 +117,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           confirmpasswordEditingController.clear();
         },
         child: Text(
-          "clear form",
+          "Clear Form",
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Colors.black, fontSize: 25, fontFamily: "TimenewsRoman"),
@@ -146,7 +146,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           }
         },
         child: Text(
-          "sign up",
+          "Sign Up",
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Colors.black, fontSize: 25, fontFamily: "TimenewsRoman"),
