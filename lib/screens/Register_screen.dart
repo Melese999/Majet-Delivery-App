@@ -11,36 +11,12 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final database = FirebaseDatabase.instance.ref();
-  String _firstname = '';
-  String _lastname = '';
-  String _username = '';
-  String _email = '';
-  String _phone = '';
-  String _password = '';
-  Widget? buildNamefield() {
-    return null;
-  }
-
-  Widget? buildLastNamefield() {
-    return null;
-  }
-
-  Widget? buildUserNamefield() {
-    return null;
-  }
-
-  Widget? buildEmailfield() {
-    return null;
-  }
-
-  Widget? buildPasswordfield() {
-    return null;
-  }
-
+  var regName ='/^[a-zA-Z]+ [a-zA-Z]+/';
   final _formkey = GlobalKey<FormState>();
   var firstNameEditingController = new TextEditingController();
   var lastNameEditingController = new TextEditingController();
   var emailEditingController = new TextEditingController();
+  final phoneEditingcontroller = new TextEditingController();
   var passwordEditingController = new TextEditingController();
   var confirmpasswordEditingController = new TextEditingController();
   var usernameEditingController = new TextEditingController();
@@ -52,19 +28,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
       controller: firstNameEditingController,
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.next,
+      onSaved: (value) {
+        firstNameEditingController.text = value!;
+      },
       decoration: InputDecoration(
           prefixIcon: Icon(Icons.account_circle),
           contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
           labelText: 'First Name',
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
       validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter some text';
-              }
-              return null;
-            },
-      onSaved: (value) {
-        _firstname = value!;
+        if (value == null || value.isEmpty) {
+          return 'Please enter some text';
+        }
+        return null;
       },
     );
     final lastnamefield = TextFormField(
@@ -80,22 +56,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
             contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
             labelText: "Last Name",
             border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Last Name is required';
+          }
+          return null;
+        });
     final usernamefield = TextFormField(
-      autofocus: false,
-      controller: usernameEditingController,
-      keyboardType: TextInputType.text,
-      onSaved: (value) {
-        usernameEditingController.text = value!;
-      },
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-          prefixIcon: Icon(Icons.account_circle),
-          contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
-          labelText: "Username",
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
-       
-    );
+        autofocus: false,
+        controller: usernameEditingController,
+        keyboardType: TextInputType.text,
+        onSaved: (value) {
+          usernameEditingController.text = value!;
+        },
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+            prefixIcon: Icon(Icons.account_circle),
+            contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
+            labelText: "Username",
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter username';
+          }
+          return null;
+        });
     final emailfield = TextFormField(
         autofocus: false,
         controller: emailEditingController,
@@ -109,8 +96,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
             contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
             labelText: "Email",
             border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
-
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+        validator: (value) {
+          if(value!.isEmpty){
+            return 'please enter email';
+          }
+           if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(value!)) {
+            return 'invalid email';
+          }
+          return null;
+        });
+    final phonefield = TextFormField(
+        autofocus: false,
+        controller: usernameEditingController,
+        keyboardType: TextInputType.text,
+        onSaved: (value) {
+          usernameEditingController.text = value!;
+        },
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+            prefixIcon: Icon(Icons.account_circle),
+            contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
+            labelText: "Username",
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter username';
+          }
+          return null;
+        });
+     
     final passwordfield = TextFormField(
         autofocus: false,
         controller: passwordEditingController,
@@ -152,7 +169,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           passwordEditingController.clear();
           confirmpasswordEditingController.clear();
         },
-        child: Text(
+        child: const Text(
           "Clear Form",
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -166,22 +183,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
       color: Color(0xffF96501),
       child: MaterialButton(
         onPressed: () {
-          
           if (_formkey.currentState!.validate()) {
-                  // If the form is valid, display a snackbar. In the real world,
-                  // you'd often call a server or save the information in a database.
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
-                  );
-                }
-          print(_firstname);
+            // If the form is valid, display a snackbar. In the real world,
+            // you'd often call a server or save the information in a database.
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Processing Data')),
+            );
+          }
           if (firstNameEditingController.text.isNotEmpty &&
               lastNameEditingController.text.isNotEmpty &&
-              emailEditingController.text.isNotEmpty &&
+              RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(emailEditingController.text)&&
               usernameEditingController.text.isNotEmpty &&
               passwordEditingController.text.length > 6 &&
               passwordEditingController.text ==
-                  confirmpasswordEditingController.text) {
+              confirmpasswordEditingController.text) {
             insertedData(
                 firstNameEditingController.text,
                 lastNameEditingController.text,
@@ -190,7 +206,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 passwordEditingController.text);
           }
         },
-        child: Text(
+        child: const Text(
           "Sign Up",
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -210,50 +226,50 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         border: Border.all(color: Colors.red, width: 5),
                         borderRadius: BorderRadius.circular(25)),
                     child: Padding(
-                        padding: EdgeInsets.fromLTRB(10, 60, 15, 60),
+                        padding: const EdgeInsets.fromLTRB(10, 60, 15, 60),
                         child: Form(
                             key: _formkey,
                             child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  SizedBox(
+                                  const SizedBox(
                                       height: 25,
                                       child: Text("Create Account",
                                           style: TextStyle(
                                               color: Color(0xffF96501),
                                               fontWeight: FontWeight.bold,
                                               fontSize: 25))),
-                                  SizedBox(height: 45),
+                                  const SizedBox(height: 45),
                                   firstnamefield,
-                                  SizedBox(height: 25),
+                                  const SizedBox(height: 25),
                                   lastnamefield,
-                                  SizedBox(height: 25),
+                                  const SizedBox(height: 25),
                                   usernamefield,
-                                  SizedBox(height: 25),
+                                  const SizedBox(height: 25),
                                   emailfield,
-                                  SizedBox(height: 25),
+                                  const SizedBox(height: 25),
+                                  phonefield,
+                                  const SizedBox(height: 25),
                                   passwordfield,
-                                  SizedBox(height: 25),
+                                  const SizedBox(height: 25),
                                   confirmpasswordfield,
-                                  SizedBox(height: 20),
+                                  const SizedBox(height: 20),
                                   Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
-                                        SizedBox(height: 25),
+                                        const SizedBox(height: 25),
                                         resetButton,
-                                        SizedBox(height: 25),
+                                        const SizedBox(height: 25),
                                         signupButton
                                       ]),
                                 ])))))));
   }
 
-  
-
   void insertedData(String firstname, String lastname, String username,
       String email, String password) {
-    database.child("path").set({
+    database.child("users").push().set({
       "firstname": firstname,
       "lastname": lastname,
       "username": username,
