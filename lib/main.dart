@@ -7,7 +7,7 @@ import 'package:food_delivery_app/screens/login_screen.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   Firebase.initializeApp(
-   options: DefaultFirebaseOptions.currentPlatform,
+    options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
 }
@@ -26,6 +26,4 @@ class MyApp extends StatelessWidget {
       home:LoginScreen(),
           );
         }
-      
-     
-} 
+}    
