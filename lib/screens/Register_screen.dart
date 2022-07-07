@@ -102,7 +102,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             return 'please enter email';
           }
            if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                          .hasMatch(value!)) {
+                          .hasMatch(value)) {
             return 'invalid email';
           }
           return null;
@@ -216,6 +216,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
 
     return Scaffold(
+      appBar: AppBar(
+  leading: IconButton(
+    icon: Icon(Icons.arrow_back, color: Colors.black),
+    onPressed: () => Navigator.of(context).pop(),
+  )),
         backgroundColor: Color(0xffFFC4A2),
         body: Center(
             child: SingleChildScrollView(
