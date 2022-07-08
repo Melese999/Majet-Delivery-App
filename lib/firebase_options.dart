@@ -44,44 +44,43 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCHlngws9HA0vmciPwe4oLol9KILaurKkQ',
-    appId: '1:922524715807:web:31c0cfb446739208ffbe2a',
-    messagingSenderId: '922524715807',
-    projectId: 'fooddelivery-95ad8',
-    authDomain: 'fooddelivery-95ad8.firebaseapp.com',
-    databaseURL: 'https://fooddelivery-95ad8-default-rtdb.firebaseio.com',
-    storageBucket: 'fooddelivery-95ad8.appspot.com',
-    measurementId: 'G-KMQMDJDKER',
+    apiKey: 'AIzaSyAgYeM-4MnRLgRMna2ifQYdzWgdYezEpPM',
+    appId: '1:829279422329:web:a001af1828ad91153151a8',
+    messagingSenderId: '829279422329',
+    projectId: 'fooddelivery-689ff',
+    authDomain: 'fooddelivery-689ff.firebaseapp.com',
+    databaseURL: 'https://fooddelivery-689ff-default-rtdb.firebaseio.com',
+    storageBucket: 'fooddelivery-689ff.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCZCYE1lt857FzKhJneuS3Ac7LZgCiFzS4',
-    appId: '1:922524715807:android:beeb82ff53a93767ffbe2a',
-    messagingSenderId: '922524715807',
-    projectId: 'fooddelivery-95ad8',
-    databaseURL: 'https://fooddelivery-95ad8-default-rtdb.firebaseio.com',
-    storageBucket: 'fooddelivery-95ad8.appspot.com',
+    apiKey: 'AIzaSyAZXfhpsL950iiWM_pvmqWF84Bckec7c0w',
+    appId: '1:829279422329:android:47ed5fd67874a6833151a8',
+    messagingSenderId: '829279422329',
+    projectId: 'fooddelivery-689ff',
+    databaseURL: 'https://fooddelivery-689ff-default-rtdb.firebaseio.com',
+    storageBucket: 'fooddelivery-689ff.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDCmfMMpyp_5zBzwu20O57aXG_5Y2R5zNg',
-    appId: '1:922524715807:ios:8a2cb6f4d9789915ffbe2a',
-    messagingSenderId: '922524715807',
-    projectId: 'fooddelivery-95ad8',
-    databaseURL: 'https://fooddelivery-95ad8-default-rtdb.firebaseio.com',
-    storageBucket: 'fooddelivery-95ad8.appspot.com',
-    iosClientId: '922524715807-dmq4ge9onv1eridmqu5e0tlf80ef8c8e.apps.googleusercontent.com',
+    apiKey: 'AIzaSyAhjsSwcYycn07gnM9b6n-K2E-ynCYx7o0',
+    appId: '1:829279422329:ios:33e99935f97f6ccb3151a8',
+    messagingSenderId: '829279422329',
+    projectId: 'fooddelivery-689ff',
+    databaseURL: 'https://fooddelivery-689ff-default-rtdb.firebaseio.com',
+    storageBucket: 'fooddelivery-689ff.appspot.com',
+    iosClientId: '829279422329-8ac2tck4kkgqicqhthsqjlr7ie3gfkhi.apps.googleusercontent.com',
     iosBundleId: 'com.example.foodDeliveryApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDCmfMMpyp_5zBzwu20O57aXG_5Y2R5zNg',
-    appId: '1:922524715807:ios:8a2cb6f4d9789915ffbe2a',
-    messagingSenderId: '922524715807',
-    projectId: 'fooddelivery-95ad8',
-    databaseURL: 'https://fooddelivery-95ad8-default-rtdb.firebaseio.com',
-    storageBucket: 'fooddelivery-95ad8.appspot.com',
-    iosClientId: '922524715807-dmq4ge9onv1eridmqu5e0tlf80ef8c8e.apps.googleusercontent.com',
+    apiKey: 'AIzaSyAhjsSwcYycn07gnM9b6n-K2E-ynCYx7o0',
+    appId: '1:829279422329:ios:33e99935f97f6ccb3151a8',
+    messagingSenderId: '829279422329',
+    projectId: 'fooddelivery-689ff',
+    databaseURL: 'https://fooddelivery-689ff-default-rtdb.firebaseio.com',
+    storageBucket: 'fooddelivery-689ff.appspot.com',
+    iosClientId: '829279422329-8ac2tck4kkgqicqhthsqjlr7ie3gfkhi.apps.googleusercontent.com',
     iosBundleId: 'com.example.foodDeliveryApp',
   );
 }

@@ -86,7 +86,7 @@ class _addMenuState extends State<addMenu> {
             return "Empty value";
           }
         });
-          final ingredientsfield = TextFormField(
+    final ingredientsfield = TextFormField(
         autofocus: false,
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
@@ -156,7 +156,7 @@ class _addMenuState extends State<addMenu> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Processing Data')),
             );
-          }  
+          }
         },
         child: const Text(
           "Add",
@@ -205,6 +205,7 @@ class _addMenuState extends State<addMenu> {
                                   ingredientsfield,
                                   const SizedBox(height: 25),
                                   priceField,
+                                  const SizedBox(height: 25),
                                   Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -216,5 +217,4 @@ class _addMenuState extends State<addMenu> {
                                       ]),
                                 ])))))));
   }
-  }
-
+}
