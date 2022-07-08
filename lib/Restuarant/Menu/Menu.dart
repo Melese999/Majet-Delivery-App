@@ -19,7 +19,7 @@ class _menuState extends State<menu> {
           child: Icon(Icons.add),
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => addMenu()));
+                context, MaterialPageRoute(builder: (context) => AddMenu()));
           }),
     );
   }

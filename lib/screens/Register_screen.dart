@@ -10,8 +10,9 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  bool _odscureText = true;
   final database = FirebaseDatabase.instance.ref();
-  var regName ='/^[a-zA-Z]+ [a-zA-Z]+/';
+  var regName = '/^[a-zA-Z]+ [a-zA-Z]+/';
   final _formkey = GlobalKey<FormState>();
   var firstNameEditingController = new TextEditingController();
   var lastNameEditingController = new TextEditingController();
@@ -98,11 +99,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
         validator: (value) {
-          if(value!.isEmpty){
+          if (value!.isEmpty) {
             return 'please enter email';
           }
-           if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                          .hasMatch(value)) {
+          if (!RegExp(
+                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+              .hasMatch(value)) {
             return 'invalid email';
           }
           return null;
@@ -127,30 +129,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
           }
           return null;
         });
-     
+
     final passwordfield = TextFormField(
         autofocus: false,
         controller: passwordEditingController,
-        obscureText: true,
+        obscureText: _odscureText,
         onSaved: (value) {
           passwordEditingController.text = value!;
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-            prefixIcon: Icon(Icons.vpn_key),
-            contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
+            suffixIcon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _odscureText = !_odscureText;
+                });
+              },
+              child:
+                  Icon(_odscureText ? Icons.visibility : Icons.visibility_off),
+            ),
+            prefixIcon: const Icon(Icons.vpn_key),
+            contentPadding: const EdgeInsets.fromLTRB(15, 20, 10, 10),
             labelText: "password",
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
     final confirmpasswordfield = TextFormField(
         autofocus: false,
         controller: confirmpasswordEditingController,
-        obscureText: true,
+        obscureText: _odscureText,
         onSaved: (value) {
           confirmpasswordEditingController.text = value!;
         },
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
+            suffixIcon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _odscureText = !_odscureText;
+                });
+              },
+              child:
+                  Icon(_odscureText ? Icons.visibility : Icons.visibility_off),
+            ),
             prefixIcon: Icon(Icons.vpn_key),
             contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
             labelText: "Confirm Password",
@@ -193,11 +213,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
           if (firstNameEditingController.text.isNotEmpty &&
               lastNameEditingController.text.isNotEmpty &&
               RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                          .hasMatch(emailEditingController.text)&&
+                  .hasMatch(emailEditingController.text) &&
               usernameEditingController.text.isNotEmpty &&
               passwordEditingController.text.length > 6 &&
               passwordEditingController.text ==
-              confirmpasswordEditingController.text) {
+                  confirmpasswordEditingController.text) {
             insertedData(
                 firstNameEditingController.text,
                 lastNameEditingController.text,
@@ -216,12 +236,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
 
     return Scaffold(
-      appBar: AppBar(
-  leading: IconButton(
-    icon: Icon(Icons.arrow_back, color: Colors.black),
-    onPressed: () => Navigator.of(context).pop(),
-  )),
-        backgroundColor: Color(0xffFFC4A2),
+        appBar: AppBar(
+            leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        )),
+        backgroundColor: const Color(0xffFFC4A2),
         body: Center(
             child: SingleChildScrollView(
                 child: Container(

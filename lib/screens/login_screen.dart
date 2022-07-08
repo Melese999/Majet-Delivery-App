@@ -8,6 +8,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool _odscureText = true;
   final _formkey = GlobalKey<FormState>();
   final TextEditingController userNamecontroller = new TextEditingController();
   final TextEditingController passwordcontroller = new TextEditingController();
@@ -31,12 +32,21 @@ class _LoginScreenState extends State<LoginScreen> {
     final passwordfield = TextFormField(
         autofocus: false,
         controller: passwordcontroller,
-        obscureText: true,
+        obscureText: _odscureText,
         onSaved: (value) {
           passwordcontroller.text = value!;
         },
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
+            suffixIcon: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _odscureText = !_odscureText;
+                });
+              },
+              child:
+                  Icon(_odscureText ? Icons.visibility : Icons.visibility_off),
+            ),
             prefixIcon: Icon(Icons.vpn_key),
             contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
             labelText: 'password',
@@ -61,13 +71,11 @@ class _LoginScreenState extends State<LoginScreen> {
         body: Center(
           child: SingleChildScrollView(
             child: Container(
-                 margin: EdgeInsets.all(30),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                          color: Colors.red,
-                           width: 5),
-                        borderRadius: BorderRadius.circular(25)),
+              margin: EdgeInsets.all(30),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.red, width: 5),
+                  borderRadius: BorderRadius.circular(25)),
               child: Padding(
                 padding: EdgeInsets.fromLTRB(10, 60, 15, 60),
                 child: Form(
@@ -94,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: <Widget>[
                             Text("Do not have an account?"),
                             GestureDetector(
-                              onTap: () {                               
+                              onTap: () {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
