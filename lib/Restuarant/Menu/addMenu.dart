@@ -6,9 +6,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:food_delivery_app/services/globalmethods.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -16,6 +13,8 @@ import '../../consts/colors.dart';
 
 class AddMenu extends StatefulWidget {
   static const routeName = '/SignUpScreen';
+
+  const AddMenu({Key? key}) : super(key: key);
   @override
   // ignore: library_private_types_in_public_api
   _AddMenu createState() => _AddMenu();
@@ -40,7 +39,7 @@ class _AddMenu extends State<AddMenu> {
   late String url = '';
   final _formKey = GlobalKey<FormState>();
   // final FirebaseAuth _auth = FirebaseAuth.instance;
-  GlobalMethods _globalMethods = GlobalMethods();
+  final GlobalMethods _globalMethods = GlobalMethods();
   bool _isLoading = false;
   void uploadfoodimage() async {
     var imagefile =
@@ -48,7 +47,6 @@ class _AddMenu extends State<AddMenu> {
     UploadTask task = imagefile.putFile(_pickedImage!);
     TaskSnapshot snapshot = await task;
     url = await snapshot.ref.getDownloadURL();
-    print(url);
   }
 
   void _pickImageCamera() async {
@@ -99,7 +97,8 @@ class _AddMenu extends State<AddMenu> {
       'description': description,
       'ingredients': ingredients,
       'price': int.parse(price),
-      'quantity': quantity
+      'quantity': quantity,
+      'imageurl': url
     };
     firestore.set(add);
     foodid.clear();
@@ -294,7 +293,7 @@ class _AddMenu extends State<AddMenu> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Processing Data')),
             );
-
+            uploadfoodimage();
             addMenuTofirestore(
                 foodid.text.toString(),
                 foodname.text.toString(),

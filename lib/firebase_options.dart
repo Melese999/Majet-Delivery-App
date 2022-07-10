@@ -42,7 +42,15 @@ class DefaultFirebaseOptions {
         );
     }
   }
-
+  
+static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyAZXfhpsL950iiWM_pvmqWF84Bckec7c0w',
+    appId: '1:829279422329:android:47ed5fd67874a6833151a8',
+    messagingSenderId: '829279422329',
+    projectId: 'fooddelivery-689ff',
+    databaseURL: 'https://fooddelivery-689ff-default-rtdb.firebaseio.com',
+    storageBucket: 'fooddelivery-689ff.appspot.com',
+  );
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyAgYeM-4MnRLgRMna2ifQYdzWgdYezEpPM',
     appId: '1:829279422329:web:a001af1828ad91153151a8',
@@ -53,14 +61,7 @@ class DefaultFirebaseOptions {
     storageBucket: 'fooddelivery-689ff.appspot.com',
   );
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAZXfhpsL950iiWM_pvmqWF84Bckec7c0w',
-    appId: '1:829279422329:android:47ed5fd67874a6833151a8',
-    messagingSenderId: '829279422329',
-    projectId: 'fooddelivery-689ff',
-    databaseURL: 'https://fooddelivery-689ff-default-rtdb.firebaseio.com',
-    storageBucket: 'fooddelivery-689ff.appspot.com',
-  );
+  
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAhjsSwcYycn07gnM9b6n-K2E-ynCYx7o0',

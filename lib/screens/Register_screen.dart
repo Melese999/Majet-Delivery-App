@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:firebase_database/firebase_database.dart';
+ 
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 
@@ -11,7 +11,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   bool _odscureText = true;
-  final database = FirebaseDatabase.instance.ref();
+  //final database = FirebaseDatabase.instance.ref();
   var regName = '/^[a-zA-Z]+ [a-zA-Z]+/';
   final _formkey = GlobalKey<FormState>();
   var firstNameEditingController = new TextEditingController();
@@ -209,7 +209,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Processing Data')),
             );
-          }
+          }/*
           if (firstNameEditingController.text.isNotEmpty &&
               lastNameEditingController.text.isNotEmpty &&
               RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
@@ -224,7 +224,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 usernameEditingController.text,
                 emailEditingController.text,
                 passwordEditingController.text);
-          }
+          }*/
         },
         child: const Text(
           "Sign Up",
@@ -291,7 +291,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       ]),
                                 ])))))));
   }
-
+/*
   void insertedData(String firstname, String lastname, String username,
       String email, String password) {
     database.child("users").push().set({
@@ -307,5 +307,5 @@ class _RegisterScreenState extends State<RegisterScreen> {
     emailEditingController.clear();
     passwordEditingController.clear();
     confirmpasswordEditingController.clear();
-  }
+  }*/
 }
