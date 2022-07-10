@@ -23,7 +23,7 @@ class res_nav_bar extends StatelessWidget {
             currentAccountPicture: CircleAvatar(
               backgroundColor: Colors.orange,
               child: Text(
-                'O',
+                'M',
                 style: TextStyle(fontSize: 40.0),
               ),
             ),

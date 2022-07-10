@@ -1,19 +1,12 @@
-// ignore_for_file: camel_case_types, unnecessary_const
-
-import 'dart:collection';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/services/globalmethods.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../consts/colors.dart';
 
 class AddMenu extends StatefulWidget {
-  static const routeName = '/SignUpScreen';
-
   const AddMenu({Key? key}) : super(key: key);
   @override
   // ignore: library_private_types_in_public_api
@@ -41,13 +34,7 @@ class _AddMenu extends State<AddMenu> {
   // final FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalMethods _globalMethods = GlobalMethods();
   bool _isLoading = false;
-  void uploadfoodimage() async {
-    var imagefile =
-        FirebaseStorage.instance.ref().child("image").child("/.jpg");
-    UploadTask task = imagefile.putFile(_pickedImage!);
-    TaskSnapshot snapshot = await task;
-    url = await snapshot.ref.getDownloadURL();
-  }
+  
 
   void _pickImageCamera() async {
     final pickedImage =
@@ -88,7 +75,13 @@ class _AddMenu extends State<AddMenu> {
     });
     Navigator.pop(context);
   }
-
+void uploadfoodimage() async {
+    var imagefile =
+        FirebaseStorage.instance.ref().child("image").child("/.jpg");
+    UploadTask task = imagefile.putFile(_pickedImage!);
+    TaskSnapshot snapshot = await task;
+    url = await snapshot.ref.getDownloadURL();
+  }
   Future<void> addMenuTofirestore(String id, String name, String description,
       String ingredients, String price, String quantity) async {
     final add = {
@@ -96,7 +89,7 @@ class _AddMenu extends State<AddMenu> {
       'name': name,
       'description': description,
       'ingredients': ingredients,
-      'price': int.parse(price),
+      'price': price,
       'quantity': quantity,
       'imageurl': url
     };
@@ -272,7 +265,14 @@ class _AddMenu extends State<AddMenu> {
       borderRadius: BorderRadius.circular(30),
       color: Color(0xffF96501),
       child: MaterialButton(
-        onPressed: () {},
+        onPressed: () {
+          foodid.clear();
+          foodname.clear();
+          fooddescription.clear();
+          foodingredients.clear();
+          foodprice.clear();
+          foodquantity.clear();
+        },
         child: const Text(
           "Clear Form",
           textAlign: TextAlign.center,
@@ -329,7 +329,7 @@ class _AddMenu extends State<AddMenu> {
               // ignore: prefer_const_constructors
               Padding(
                   padding: const EdgeInsets.fromLTRB(
-                      50, 50, 50, 25), //apply padding to all four sides
+                      50, 0, 50, 25), //apply padding to all four sides
                   child: const Text("Add Any Food ",
                       style: TextStyle(
                           color: Colors.black,
@@ -339,7 +339,7 @@ class _AddMenu extends State<AddMenu> {
                 children: [
                   Container(
                     margin: const EdgeInsets.symmetric(
-                        vertical: 30, horizontal: 30),
+                        vertical: 20, horizontal: 30),
                     child: CircleAvatar(
                       radius: 105,
                       backgroundColor: ColorsConsts.gradiendLEnd,
@@ -347,7 +347,7 @@ class _AddMenu extends State<AddMenu> {
                         radius: 100,
                         backgroundColor: ColorsConsts.gradiendFEnd,
                         backgroundImage: _pickedImage == null
-                            ? const AssetImage("")
+                            ? null
                             : FileImage(_pickedImage!) as ImageProvider,
                       ),
                     ),
@@ -451,7 +451,7 @@ class _AddMenu extends State<AddMenu> {
                 ],
               ),
               Container(
-                  margin: const EdgeInsets.fromLTRB(200, 10, 200, 100),
+                  margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Colors.red, width: 5),
