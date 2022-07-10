@@ -5,9 +5,9 @@ import 'package:food_delivery_app/Restuarant/Menu/Menu.dart';
 import 'firebase_options.dart';
 import 'package:food_delivery_app/screens/login_screen.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp(
+  await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
