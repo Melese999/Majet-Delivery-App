@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:food_delivery_app/services/globalmethods.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../consts/colors.dart';
@@ -15,7 +16,7 @@ class AddMenu extends StatefulWidget {
 
 class _AddMenu extends State<AddMenu> {
   final firestore = FirebaseFirestore.instance.collection("menu");
-  var imagefile = FirebaseStorage.instance.ref();
+  var imagefile = FirebaseStorage.instance.ref().child("images");
   final FocusNode _idFocusNode = FocusNode();
   final FocusNode _nameFocusNode = FocusNode();
   final FocusNode _descriptionFocusNode = FocusNode();
@@ -47,6 +48,8 @@ class _AddMenu extends State<AddMenu> {
     Navigator.pop(context);
   }
 
+ 
+
   void _pickImageGallery() async {
     final picker = ImagePicker();
     final pickedImage = await picker.getImage(source: ImageSource.gallery);
@@ -76,10 +79,8 @@ class _AddMenu extends State<AddMenu> {
     Navigator.pop(context);
   }
 
- 
   void uploadfoodimage() async {
-    String food = foodname.text;
-    imagefile.child('/images/$food');
+    imagefile.child('.jpg');
     imagefile.putFile(_pickedImage!);
   }
 
@@ -138,36 +139,7 @@ class _AddMenu extends State<AddMenu> {
         });
       }
     }
-  } /*
-          final ref = FirebaseStorage.instance
-              .ref()
-              .child('usersImages')
-              .child(_fullName + '.jpg');
-          await ref.putFile(_pickedImage);
-          url = await ref.getDownloadURL();
-          await _auth.createUserWithEmailAndPassword(
-              email: _emailAddress.toLowerCase().trim(),
-              password: _password.trim());
-          final User? user = _auth.currentUser;
-          final _uid = user?.uid;
-          user?.updateProfile(photoURL: url, displayName: _fullName);
-          user?.reload();
-          await FirebaseFirestore.instance.collection('users').doc(_uid).set({
-            'id': _uid,
-            'name': _fullName,
-            'email': _emailAddress,
-            'phoneNumber': _phoneNumber,
-            'imageUrl': url,
-            'joinedAt': formattedDate,
-            'createdAt': Timestamp.now(),
-          });
-          Navigator.canPop(context) ? Navigator.pop(context) : null;
-        }
-      } 
-      }
-    }
   }
-  */
 
   @override
   Widget build(BuildContext context) {
@@ -242,7 +214,8 @@ class _AddMenu extends State<AddMenu> {
     final pricefield = TextFormField(
         autofocus: false,
         controller: foodprice,
-        keyboardType: const TextInputType.numberWithOptions(),
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        keyboardType: TextInputType.number,
         onSaved: (value) {
           foodprice.text = value!;
         },
@@ -261,6 +234,7 @@ class _AddMenu extends State<AddMenu> {
     final quanttityfield = TextFormField(
         autofocus: false,
         controller: foodquantity,
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         onSaved: (value) {
           foodquantity.text = value!;
         },

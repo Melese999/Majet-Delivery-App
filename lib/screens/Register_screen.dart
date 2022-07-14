@@ -316,16 +316,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     user!.reload();
    // xx.registerUsingEmailPassword(
         //name: firstname, email: email, password: password);
-
-    await FirebaseFirestore.instance.collection('users').doc(uid).set({
-       
+    await FirebaseFirestore.instance.collection('users').doc(uid).set({       
       "firstname": firstname,
       "lastname": lastname,
       "username": username,
       "email": email,
       "password": password
     });
-
     firstNameEditingController.clear();
     lastNameEditingController.clear();
     usernameEditingController.clear();

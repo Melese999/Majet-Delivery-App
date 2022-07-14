@@ -15,8 +15,9 @@ class _menuState extends State<home> {
   Widget build(BuildContext context) {
       final themestate = Provider.of<DarkThemeProvider>(context);
       bool isdark = themestate.darkTheme;
-    return const Scaffold(
-     
-        );
+    return Scaffold(
+  
+        drawer: const res_nav_bar(), appBar: AppBar(title: const Text('Home page')));
+        
   }
 }

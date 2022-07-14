@@ -8,6 +8,8 @@ import 'package:food_delivery_app/provider/darkthem.dart';
 
 import 'package:food_delivery_app/screens/login_screen.dart';
 import 'package:provider/provider.dart';
+
+import 'Restuarant/nav_bar/bottombar.dart';
  
 
 void main() async {
@@ -48,8 +50,11 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'MAJET',
             theme: Styles.themeData(themeChangeProvider.darkTheme, context),
-            home: LoginScreen(),
+            home: BottomBarScreen(),
+         
           );
-        }));
+        })
+        
+      );
   }
 }
