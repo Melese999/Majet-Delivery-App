@@ -1,6 +1,10 @@
 import 'dart:ui';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/Restuarant/home.dart';
 import 'package:food_delivery_app/screens/Register_screen.dart';
+import 'package:food_delivery_app/services/fire_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -8,6 +12,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  FireAuth sens = FireAuth();
   bool _odscureText = true;
   final _formkey = GlobalKey<FormState>();
   final TextEditingController userNamecontroller = new TextEditingController();
@@ -18,14 +24,14 @@ class _LoginScreenState extends State<LoginScreen> {
     final usernamefield = TextFormField(
         autofocus: false,
         controller: userNamecontroller,
-        keyboardType: TextInputType.text,
+        keyboardType: TextInputType.emailAddress,
         onSaved: (value) {
           userNamecontroller.text = value!;
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-            prefixIcon: Icon(Icons.email),
-            contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
+            prefixIcon: const Icon(Icons.email),
+            contentPadding: const EdgeInsets.fromLTRB(15, 20, 10, 10),
             labelText: 'email',
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
@@ -47,8 +53,8 @@ class _LoginScreenState extends State<LoginScreen> {
               child:
                   Icon(_odscureText ? Icons.visibility : Icons.visibility_off),
             ),
-            prefixIcon: Icon(Icons.vpn_key),
-            contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
+            prefixIcon: const Icon(Icons.vpn_key),
+            contentPadding: const EdgeInsets.fromLTRB(15, 20, 10, 10),
             labelText: 'password',
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
@@ -57,8 +63,17 @@ class _LoginScreenState extends State<LoginScreen> {
       borderRadius: BorderRadius.circular(30),
       color: Color(0xffF96501),
       child: MaterialButton(
-        onPressed: () {},
-        child: Text(
+        onPressed: () async {
+          FirebaseAuth.instance
+              .signInWithEmailAndPassword(
+                  email: userNamecontroller.text,
+                  password: passwordcontroller.text)
+              .then((value) {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => const home()));
+          });
+        },
+        child: const Text(
           "Login",
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -71,36 +86,36 @@ class _LoginScreenState extends State<LoginScreen> {
         body: Center(
           child: SingleChildScrollView(
             child: Container(
-              margin: EdgeInsets.all(30),
+              margin: const EdgeInsets.all(30),
               decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(color: Colors.red, width: 5),
                   borderRadius: BorderRadius.circular(25)),
               child: Padding(
-                padding: EdgeInsets.fromLTRB(10, 60, 15, 60),
+                padding: const EdgeInsets.fromLTRB(10, 60, 15, 60),
                 child: Form(
                     key: _formkey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        SizedBox(
+                        const SizedBox(
                             height: 25,
                             child: Text(
                               'Login',
                               textAlign: TextAlign.center,
                             )),
-                        SizedBox(height: 45),
+                        const SizedBox(height: 45),
                         usernamefield,
-                        SizedBox(height: 25),
+                        const SizedBox(height: 25),
                         passwordfield,
-                        SizedBox(height: 25),
+                        const SizedBox(height: 25),
                         LoginButton,
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text("Do not have an account?"),
+                            const Text("Do not have an account?"),
                             GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -109,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         builder: (context) =>
                                             RegisterScreen()));
                               },
-                              child: Text(
+                              child: const Text(
                                 "create Account",
                                 style: TextStyle(
                                     color: Color(0xffF96501),

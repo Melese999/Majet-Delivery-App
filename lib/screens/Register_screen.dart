@@ -1,8 +1,10 @@
 import 'dart:ui';
 
- 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:email_validator/email_validator.dart';
+import 'package:food_delivery_app/screens/login_screen.dart';
+import 'package:food_delivery_app/services/fire_auth.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -11,16 +13,19 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   bool _odscureText = true;
+  FireAuth xx = FireAuth();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final firestore = FirebaseFirestore.instance.collection("users");
   //final database = FirebaseDatabase.instance.ref();
   var regName = '/^[a-zA-Z]+ [a-zA-Z]+/';
   final _formkey = GlobalKey<FormState>();
-  var firstNameEditingController = new TextEditingController();
-  var lastNameEditingController = new TextEditingController();
-  var emailEditingController = new TextEditingController();
-  final phoneEditingcontroller = new TextEditingController();
-  var passwordEditingController = new TextEditingController();
-  var confirmpasswordEditingController = new TextEditingController();
-  var usernameEditingController = new TextEditingController();
+  var firstNameEditingController = TextEditingController();
+  var lastNameEditingController = TextEditingController();
+  var emailEditingController = TextEditingController();
+  final phoneEditingcontroller = TextEditingController();
+  var passwordEditingController = TextEditingController();
+  var confirmpasswordEditingController = TextEditingController();
+  var usernameEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +38,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         firstNameEditingController.text = value!;
       },
       decoration: InputDecoration(
-          prefixIcon: Icon(Icons.account_circle),
-          contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
+          prefixIcon: const Icon(Icons.account_circle),
+          contentPadding: const EdgeInsets.fromLTRB(15, 20, 10, 10),
           labelText: 'First Name',
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
       validator: (value) {
@@ -73,7 +78,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-            prefixIcon: Icon(Icons.account_circle),
+            prefixIcon: const Icon(Icons.account_circle),
             contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
             labelText: "Username",
             border:
@@ -93,8 +98,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-            prefixIcon: Icon(Icons.email),
-            contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
+            prefixIcon: const Icon(Icons.email),
+            contentPadding: const EdgeInsets.fromLTRB(15, 20, 10, 10),
             labelText: "Email",
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
@@ -118,8 +123,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-            prefixIcon: Icon(Icons.account_circle),
-            contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
+            prefixIcon: const Icon(Icons.account_circle),
+            contentPadding: const EdgeInsets.fromLTRB(15, 20, 10, 10),
             labelText: "Username",
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
@@ -171,15 +176,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child:
                   Icon(_odscureText ? Icons.visibility : Icons.visibility_off),
             ),
-            prefixIcon: Icon(Icons.vpn_key),
-            contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
+            prefixIcon: const Icon(Icons.vpn_key),
+            contentPadding: const EdgeInsets.fromLTRB(15, 20, 10, 10),
             labelText: "Confirm Password",
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
     final resetButton = Material(
       elevation: 0,
       borderRadius: BorderRadius.circular(30),
-      color: Color(0xffF96501),
+      color: const Color(0xffF96501),
       child: MaterialButton(
         onPressed: () {
           firstNameEditingController.clear();
@@ -200,7 +205,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final signupButton = Material(
       elevation: 0,
       borderRadius: BorderRadius.circular(30),
-      color: Color(0xffF96501),
+      color: const Color(0xffF96501),
       child: MaterialButton(
         onPressed: () {
           if (_formkey.currentState!.validate()) {
@@ -209,22 +214,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Processing Data')),
             );
-          }/*
-          if (firstNameEditingController.text.isNotEmpty &&
-              lastNameEditingController.text.isNotEmpty &&
-              RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                  .hasMatch(emailEditingController.text) &&
-              usernameEditingController.text.isNotEmpty &&
-              passwordEditingController.text.length > 6 &&
-              passwordEditingController.text ==
-                  confirmpasswordEditingController.text) {
-            insertedData(
-                firstNameEditingController.text,
-                lastNameEditingController.text,
-                usernameEditingController.text,
-                emailEditingController.text,
-                passwordEditingController.text);
-          }*/
+
+            if (firstNameEditingController.text.isNotEmpty &&
+                lastNameEditingController.text.isNotEmpty &&
+                RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                    .hasMatch(emailEditingController.text) &&
+                usernameEditingController.text.isNotEmpty &&
+                passwordEditingController.text.length > 6 &&
+                passwordEditingController.text ==
+                    confirmpasswordEditingController.text) {
+              insertedData (
+                  firstNameEditingController.text,
+                  lastNameEditingController.text,
+                  usernameEditingController.text,
+                  emailEditingController.text,
+                  passwordEditingController.text);
+                     _auth.createUserWithEmailAndPassword(
+        email: emailEditingController.text.toLowerCase().trim(), password: passwordEditingController.text).then((value){
+         Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            LoginScreen()));
+        }).onError((error, stackTrace){
+          print("error${error.toString()}");
+        });
+            }
+          }
         },
         child: const Text(
           "Sign Up",
@@ -291,21 +307,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       ]),
                                 ])))))));
   }
-/*
+
   void insertedData(String firstname, String lastname, String username,
-      String email, String password) {
-    database.child("users").push().set({
+      String email, String password) async {
+   
+    final User? user = _auth.currentUser;
+    final uid = user?.uid;
+    user!.reload();
+   // xx.registerUsingEmailPassword(
+        //name: firstname, email: email, password: password);
+
+    await FirebaseFirestore.instance.collection('users').doc(uid).set({
+       
       "firstname": firstname,
       "lastname": lastname,
       "username": username,
       "email": email,
       "password": password
     });
+
     firstNameEditingController.clear();
     lastNameEditingController.clear();
     usernameEditingController.clear();
     emailEditingController.clear();
     passwordEditingController.clear();
     confirmpasswordEditingController.clear();
-  }*/
+  }
 }

@@ -14,7 +14,8 @@ class AddMenu extends StatefulWidget {
 }
 
 class _AddMenu extends State<AddMenu> {
-  final firestore = FirebaseFirestore.instance.collection("menu").doc("uses");
+  final firestore = FirebaseFirestore.instance.collection("menu");
+  var imagefile = FirebaseStorage.instance.ref();
   final FocusNode _idFocusNode = FocusNode();
   final FocusNode _nameFocusNode = FocusNode();
   final FocusNode _descriptionFocusNode = FocusNode();
@@ -34,7 +35,6 @@ class _AddMenu extends State<AddMenu> {
   // final FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalMethods _globalMethods = GlobalMethods();
   bool _isLoading = false;
-  
 
   void _pickImageCamera() async {
     final pickedImage =
@@ -71,20 +71,22 @@ class _AddMenu extends State<AddMenu> {
 
   void _remove() {
     setState(() {
-      _pickedImage = '' as File;
+      _pickedImage = null;
     });
     Navigator.pop(context);
   }
-void uploadfoodimage() async {
-    var imagefile =
-        FirebaseStorage.instance.ref().child("image").child("/.jpg");
-    UploadTask task = imagefile.putFile(_pickedImage!);
-    TaskSnapshot snapshot = await task;
-    url = await snapshot.ref.getDownloadURL();
+
+ 
+  void uploadfoodimage() async {
+    String food = foodname.text;
+    imagefile.child('/images/$food');
+    imagefile.putFile(_pickedImage!);
   }
+
   Future<void> addMenuTofirestore(String id, String name, String description,
       String ingredients, String price, String quantity) async {
-    final add = {
+    url = await imagefile.getDownloadURL();
+    firestore.add({
       'id': id,
       'name': name,
       'description': description,
@@ -92,8 +94,7 @@ void uploadfoodimage() async {
       'price': price,
       'quantity': quantity,
       'imageurl': url
-    };
-    firestore.set(add);
+    });
     foodid.clear();
     foodname.clear();
     fooddescription.clear();
@@ -118,6 +119,14 @@ void uploadfoodimage() async {
         } else {
           setState(() {
             _isLoading = true;
+            uploadfoodimage();
+            addMenuTofirestore(
+                foodid.text.toString(),
+                foodname.text.toString(),
+                fooddescription.text.toString(),
+                foodingredients.text.toString(),
+                foodprice.text.toString(),
+                foodquantity.text.toString());
           });
         }
       } catch (error) {
@@ -293,14 +302,7 @@ void uploadfoodimage() async {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Processing Data')),
             );
-            uploadfoodimage();
-            addMenuTofirestore(
-                foodid.text.toString(),
-                foodname.text.toString(),
-                fooddescription.text.toString(),
-                foodingredients.text.toString(),
-                foodprice.text.toString(),
-                foodquantity.text.toString());
+            _submitForm();
           }
         },
         child: const Text(
