@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/Restuarant/home.dart';
+import 'package:food_delivery_app/Restuarant/nav_bar/bottombar.dart';
 import 'package:food_delivery_app/screens/Register_screen.dart';
 import 'package:food_delivery_app/services/fire_auth.dart';
 
@@ -70,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   password: passwordcontroller.text)
               .then((value) {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => const home()));
+                context, MaterialPageRoute(builder: (context) =>   BottomBarScreen()));
           });
         },
         child: const Text(
@@ -106,6 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               textAlign: TextAlign.center,
                             )),
                         const SizedBox(height: 45),
+                        ggahdghaghdghghfghagdfghghfghafhgfghsfsjdf
                         usernamefield,
                         const SizedBox(height: 25),
                         passwordfield,

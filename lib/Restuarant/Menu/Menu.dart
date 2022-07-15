@@ -1,12 +1,10 @@
 // ignore_for_file: dead_code
 
-import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 // ignore: implementation_imports
 import 'package:food_delivery_app/Restuarant/Menu/addMenu.dart';
-import 'package:food_delivery_app/Restuarant/Menu/deleteMenu.dart';
 
 class menu extends StatefulWidget {
   const menu({Key? key}) : super(key: key);
@@ -18,12 +16,12 @@ class menu extends StatefulWidget {
 class _menuState extends State<menu> {
   @override
   Widget build(BuildContext context) {
-    final foodid = TextEditingController();
     final foodname = TextEditingController();
     final fooddescription = TextEditingController();
     final foodingredients = TextEditingController();
     final foodprice = TextEditingController();
     final foodquantity = TextEditingController();
+  
     return Scaffold(
       appBar: AppBar(title: const Text('Menu page')),
       body: StreamBuilder<QuerySnapshot>(
@@ -44,18 +42,59 @@ class _menuState extends State<menu> {
                             elevation: 1,
                             child: ListTile(
                                 dense: false,
-                                title: Text((documentSnapshot != null)
-                                    ? (documentSnapshot['name'])
-                                    : " "),
-                                subtitle: Text((documentSnapshot != null)
-                                    ? (documentSnapshot['description'] != null)
-                                        ? documentSnapshot['description']
-                                        : ''
-                                    : ''),
+                                title: Text(  (documentSnapshot!['name'])
+                                     ),
+                                subtitle: Column(children:[
+                                  Text(documentSnapshot['description'],
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: const TextStyle(
+                                                                        color: Color(
+                                                                            0xffF96501),
+                                                                        fontSize:
+                                                                            15,
+                                                                        fontFamily:
+                                                                            "TimenewsRoman"),                                        ),
+                                        Text(documentSnapshot['ingredients'],
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: const TextStyle(
+                                                                        color: Color(
+                                                                            0xffF96501),
+                                                                        fontSize:
+                                                                            15,
+                                                                        fontFamily:
+                                                                            "TimenewsRoman"),
+                                        ),Text(documentSnapshot['price'],
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: const TextStyle(
+                                                                        color: Color(
+                                                                            0xffF96501),
+                                                                        fontSize:
+                                                                            15,
+                                                                        fontFamily:
+                                                                            "TimenewsRoman"),
+                                        ),Text(documentSnapshot['quantity'],
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: const TextStyle(
+                                                                        color: Color(
+                                                                            0xffF96501),
+                                                                        fontSize:
+                                                                            15,
+                                                                        fontFamily:
+                                                                            "TimenewsRoman"),
+                                        ) 
+                                          ]),
                                 trailing: Image.network(
-                                    documentSnapshot!['imageurl'],
+                                    documentSnapshot['imageurl'],
                                     fit: BoxFit.cover,
-                                    height: 100,
+                                    height: 400,
                                     width: 100),
                                 leading: IconButton(
                                     icon: const Icon(Icons.edit),
@@ -78,11 +117,11 @@ class _menuState extends State<menu> {
                                                   decoration: BoxDecoration(
                                                       color: Colors.white,
                                                       border: Border.all(
-                                                        color: Colors.red,
-                                                      ),
+                                                          color: Colors.red,
+                                                          width: 5),
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                              15)),
+                                                              0)),
                                                   child: Padding(
                                                       padding:
                                                           const EdgeInsets.all(
@@ -90,7 +129,24 @@ class _menuState extends State<menu> {
                                                       child: ListView(
                                                           shrinkWrap: true,
                                                           children: [
-                                                            Container(),
+                                                            const Text(
+                                                              "Edit The food ",
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize: 25,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontFamily:
+                                                                      "TimenewsRoman"),
+                                                            ),
+                                                            const SizedBox(
+                                                              height: 20,
+                                                            ),
                                                             _buildTextField(
                                                                 foodname,
                                                                 'Name'),
@@ -134,37 +190,47 @@ class _menuState extends State<menu> {
                                                                           .all(26),
                                                                   onPressed:
                                                                       () {
-                                                                    snapshot
-                                                                        .data
-                                                                        ?.docs[
-                                                                            index]
-                                                                        .reference
-                                                                        .update({
-                                                                      'name': foodname
-                                                                          .text,
-                                                                      'description':
-                                                                          fooddescription
-                                                                              .text,
-                                                                      'ingredients':
-                                                                          foodingredients
-                                                                              .text,
-                                                                      'price':
-                                                                          foodprice
-                                                                              .text,
-                                                                      'quantity':
-                                                                          foodquantity
-                                                                              .text
-                                                                    });
-                                                                    foodname
-                                                                        .clear();
-                                                                    fooddescription
-                                                                        .clear();
-                                                                    foodingredients
-                                                                        .clear();
-                                                                    foodprice
-                                                                        .clear();
-                                                                    foodquantity
-                                                                        .clear();
+                                                                    if (foodname.text.isNotEmpty &&
+                                                                        foodingredients
+                                                                            .text
+                                                                            .isNotEmpty &&
+                                                                        fooddescription
+                                                                            .text
+                                                                            .isNotEmpty &&
+                                                                        foodprice
+                                                                            .text
+                                                                            .isNotEmpty &&
+                                                                        foodquantity
+                                                                            .text
+                                                                            .isNotEmpty) {
+                                                                      snapshot
+                                                                          .data
+                                                                          ?.docs[
+                                                                              index]
+                                                                          .reference
+                                                                          .update({
+                                                                        'name':
+                                                                            foodname.text,
+                                                                        'description':
+                                                                            fooddescription.text,
+                                                                        'ingredients':
+                                                                            foodingredients.text,
+                                                                        'price':
+                                                                            foodprice.text,
+                                                                        'quantity':
+                                                                            foodquantity.text
+                                                                      });
+                                                                      foodname
+                                                                          .clear();
+                                                                      fooddescription
+                                                                          .clear();
+                                                                      foodingredients
+                                                                          .clear();
+                                                                      foodprice
+                                                                          .clear();
+                                                                      foodquantity
+                                                                          .clear();
+                                                                    }
                                                                   },
                                                                   child:
                                                                       const Text(
@@ -201,10 +267,20 @@ class _menuState extends State<menu> {
 
   _buildTextField(TextEditingController controller, String s) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+      
       child: TextFormField(
+        onSaved: (value) {
+        controller.text = value!;
+      },
+         validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter some text';
+        }
+        return null;
+      },
           controller: controller,
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
           decoration: InputDecoration(
               labelText: s,
               border:
