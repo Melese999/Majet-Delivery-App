@@ -116,7 +116,7 @@ class _res_nav_barState extends State<res_nav_bar> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const settings()));
+                          builder: (context) => const Settings()));
                 },
               ),
               ListTile(
