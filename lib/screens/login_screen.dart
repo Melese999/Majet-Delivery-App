@@ -107,7 +107,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               textAlign: TextAlign.center,
                             )),
                         const SizedBox(height: 45),
-                        ggahdghaghdghghfghagdfghghfghafhgfghsfsjdf
                         usernamefield,
                         const SizedBox(height: 25),
                         passwordfield,
