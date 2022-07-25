@@ -1,4 +1,3 @@
- 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -73,26 +72,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           }
           return null;
         });
-    final usernamefield = TextFormField(
-        autofocus: false,
-        controller: usernameEditingController,
-        keyboardType: TextInputType.text,
-        onSaved: (value) {
-          usernameEditingController.text = value!;
-        },
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-            prefixIcon: const Icon(Icons.account_circle),
-            contentPadding: EdgeInsets.fromLTRB(15, 20, 10, 10),
-            labelText: "Username",
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter username';
-          }
-          return null;
-        });
     final emailfield = TextFormField(
         autofocus: false,
         controller: emailEditingController,
@@ -130,7 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         decoration: InputDecoration(
             prefixIcon: const Icon(Icons.contact_mail_outlined),
             contentPadding: const EdgeInsets.fromLTRB(15, 20, 10, 10),
-            labelText: "vendors",
+            labelText: "location",
             suffixIcon: IconButton(
               icon: const Icon(Icons.location_searching),
               onPressed: () {
@@ -214,7 +193,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         onPressed: () {
           firstNameEditingController.clear();
           lastNameEditingController.clear();
-          usernameEditingController.clear();
           emailEditingController.clear();
           passwordEditingController.clear();
           confirmpasswordEditingController.clear();
@@ -239,16 +217,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Processing Data')),
             );
+            String role = 'user';
 
             _userData
                 .registerRestuarant(
                     emailEditingController.text, passwordEditingController.text)
                 .then((credential) {
               if (credential.user!.uid != null) {
-                _userData.saveRestuarantToDb(
-                    firstNameEditingController.text,
-                    lastNameEditingController.text,
-                    passwordEditingController.text);
+                _userData.saveRestuarantToDb(firstNameEditingController.text,
+                    lastNameEditingController.text, role);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => LoginScreen()));
               } else {
@@ -302,11 +279,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   const SizedBox(height: 25),
                                   lastnamefield,
                                   const SizedBox(height: 25),
-                                  usernamefield,
-                                  const SizedBox(height: 25),
                                   emailfield,
-                                  const SizedBox(height: 25),
-                                  phonefield,
+                                  // const SizedBox(height: 25),
+                                  // phonefield,
                                   const SizedBox(height: 25),
                                   passwordfield,
                                   const SizedBox(height: 25),
@@ -323,13 +298,4 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       ]),
                                 ])))))));
   }
-/*
-  
-    firstNameEditingController.clear();
-    lastNameEditingController.clear();
-    usernameEditingController.clear();
-    emailEditingController.clear();
-    passwordEditingController.clear();
-    confirmpasswordEditingController.clear();
-    */
 }

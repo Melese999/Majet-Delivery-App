@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:food_delivery_app/Restuarant/Menu/Menu.dart';
-import 'package:food_delivery_app/Restuarant/feedback.dart';
-import 'package:food_delivery_app/Restuarant/home.dart';
-import 'package:food_delivery_app/Restuarant/vieworder.dart';
+import 'package:food_delivery_app/AllActor/Restuarant/Menu/Menu.dart';
+import 'package:food_delivery_app/AllActor/Restuarant/feedback.dart';
+import 'package:food_delivery_app/AllActor/Restuarant/home.dart';
+import 'package:food_delivery_app/AllActor/Restuarant/vieworder.dart'; 
 import 'package:food_delivery_app/consts/myicons.dart';
 
  
@@ -22,32 +22,9 @@ final List  pages = [
       const home(),
       const menu(),
       const res_view_order(),
-      const res_feedback(),
-   
+      const res_feedback(),   
     ];
-  @override
-  void initState() {
-   
-    // _pages = [
-    //   {
-    //     'page': Home(),
-    //   },
-    //   {
-    //     'page': Feeds(),
-    //   },
-    //   {
-    //     'page': Search(),
-    //   },
-    //   {
-    //     'page': CartScreen(),
-    //   },
-    //   {
-    //     'page': UserInfo(),
-    //   },
-    // ];
-    super.initState();
-  }
-
+ 
   void _selectPage(int index) {
     setState(() {
       _selectedPageIndex = index;

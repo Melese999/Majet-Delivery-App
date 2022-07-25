@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:food_delivery_app/consts/colors.dart';
 import 'package:food_delivery_app/services/globalmethods.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../consts/colors.dart';
+ 
 
 class AddMenu extends StatefulWidget {
   const AddMenu({Key? key}) : super(key: key);
@@ -15,8 +17,9 @@ class AddMenu extends StatefulWidget {
 }
 
 class _AddMenu extends State<AddMenu> {
+  User? e = FirebaseAuth.instance.currentUser;
   final firestore = FirebaseFirestore.instance.collection("menu");
-  var imagefile = FirebaseStorage.instance.ref().child("images");
+
   final FocusNode _idFocusNode = FocusNode();
   final FocusNode _nameFocusNode = FocusNode();
   final FocusNode _descriptionFocusNode = FocusNode();
@@ -48,8 +51,6 @@ class _AddMenu extends State<AddMenu> {
     Navigator.pop(context);
   }
 
- 
-
   void _pickImageGallery() async {
     final picker = ImagePicker();
     final pickedImage = await picker.getImage(source: ImageSource.gallery);
@@ -79,16 +80,15 @@ class _AddMenu extends State<AddMenu> {
     Navigator.pop(context);
   }
 
-  void uploadfoodimage() async {
-    imagefile.child('.jpg');
-    imagefile.putFile(_pickedImage!);
-  }
-
   Future<void> addMenuTofirestore(String id, String name, String description,
       String ingredients, String price, String quantity) async {
+    var name = foodname.text;
+    var imagefile = FirebaseStorage.instance.ref().child('images/$name.jpg');
+    await imagefile.putFile(_pickedImage!);
     url = await imagefile.getDownloadURL();
+
     firestore.add({
-      'id': id,
+      'restuarant': e!.email,
       'name': name,
       'description': description,
       'ingredients': ingredients,
@@ -107,7 +107,7 @@ class _AddMenu extends State<AddMenu> {
 
   void _submitForm() async {
     final isValid = _formKey.currentState?.validate();
-    FocusScope.of(context).unfocus();  
+    FocusScope.of(context).unfocus();
 
     if (isValid!) {
       _formKey.currentState?.save();
@@ -117,14 +117,14 @@ class _AddMenu extends State<AddMenu> {
         } else {
           setState(() {
             _isLoading = true;
-            uploadfoodimage();
             addMenuTofirestore(
-                foodid.text.toString(),
-                foodname.text.toString(),
-                fooddescription.text.toString(),
-                foodingredients.text.toString(),
-                foodprice.text.toString(),
-                foodquantity.text.toString());
+              foodid.text.toString(),
+              foodname.text.toString(),
+              fooddescription.text.toString(),
+              foodingredients.text.toString(),
+              foodprice.text.toString(),
+              foodquantity.text.toString(),
+            );
           });
         }
       } catch (error) {
@@ -140,24 +140,6 @@ class _AddMenu extends State<AddMenu> {
 
   @override
   Widget build(BuildContext context) {
-    final foodidfield = TextFormField(
-      autofocus: false,
-      controller: foodid,
-      keyboardType: TextInputType.text,
-      textInputAction: TextInputAction.next,
-      onSaved: (value) {
-        foodid.text = value!;
-      },
-      decoration: InputDecoration(
-          labelText: 'food id',
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter some text';
-        }
-        return null;
-      },
-    );
     final foodnamefield = TextFormField(
         autofocus: false,
         controller: foodname,
@@ -246,7 +228,6 @@ class _AddMenu extends State<AddMenu> {
       color: Color(0xffF96501),
       child: MaterialButton(
         onPressed: () {
-          foodid.clear();
           foodname.clear();
           fooddescription.clear();
           foodingredients.clear();
@@ -264,7 +245,7 @@ class _AddMenu extends State<AddMenu> {
     final signupButton = Material(
       elevation: 0,
       borderRadius: BorderRadius.circular(30),
-      color: Color(0xffF96501),
+      color: const Color(0xffF96501),
       child: MaterialButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
@@ -437,8 +418,6 @@ class _AddMenu extends State<AddMenu> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                const SizedBox(height: 45),
-                                foodidfield,
                                 const SizedBox(height: 25),
                                 foodnamefield,
                                 const SizedBox(height: 25),
@@ -463,181 +442,5 @@ class _AddMenu extends State<AddMenu> {
             ],
           ))
         ]));
-  } /*
-                    key: _formKey,
-                    child: Column(children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(200, 15, 300, 15),
-                        child: TextFormField(
-                          controller: foodid,
-                          key: const ValueKey('Id'),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'id cannot be null';
-                            }
-                            return null;
-                          },
-                          textInputAction: TextInputAction.next,
-                          onEditingComplete: () =>
-                              FocusScope.of(context).requestFocus(_idFocusNode),
-                          keyboardType: TextInputType.text,
-                          decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            filled: true,
-                            labelText: 'food id',
-                          ),
-                          onSaved: (value) {
-                            foodid.text = value!;
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(200, 15, 300, 15),
-                        child: TextFormField(
-                          controller: foodname,
-                          key: const ValueKey('foodName'),
-                          focusNode: _nameFocusNode,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'please neter food name';
-                            }
-                            return null;
-                          },
-                          textInputAction: TextInputAction.next,
-                          onEditingComplete: () => FocusScope.of(context)
-                              .requestFocus(_nameFocusNode),
-                          keyboardType: TextInputType.text,
-                          decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            filled: true,
-                            labelText: 'Food name',
-                          ),
-                          onSaved: (value) {
-                            foodname.text = value!;
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(200, 15, 300, 15),
-                        child: TextFormField(
-                          controller: fooddescription,
-                          key: const ValueKey('descrption'),
-                          keyboardType: TextInputType.multiline,
-                          focusNode: _descriptionFocusNode,
-                          decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            filled: true,
-                            hintText: 'please enter the food decription',
-                          ),
-                          onSaved: (value) {
-                            fooddescription.text = value!;
-                          },
-                          onEditingComplete: () => FocusScope.of(context)
-                              .requestFocus(_descriptionFocusNode),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(200, 15, 300, 15),
-                        child: TextFormField(
-                          controller: foodingredients,
-                          key: const ValueKey('ingredients'),
-                          keyboardType: TextInputType.text,
-                          focusNode: _ingredientsFocusNode,
-                          decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            filled: true,
-                            hintText: 'please enter some ingredients',
-                          ),
-                          onSaved: (value) {
-                            foodingredients.text = value!;
-                          },
-                          onEditingComplete: () => FocusScope.of(context)
-                              .requestFocus(_ingredientsFocusNode),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(200, 15, 300, 15),
-                        child: TextFormField(
-                          controller: foodprice,
-                          key: const ValueKey('price'),
-                          keyboardType: TextInputType.number,
-                          focusNode: _priceFocusNode,
-                          decoration: const InputDecoration(
-                              border: UnderlineInputBorder(),
-                              filled: true,
-                              labelText: ' food price'),
-                          onSaved: (value) {
-                            foodprice.text = value!;
-                          },
-                          onEditingComplete: () => FocusScope.of(context)
-                              .requestFocus(_priceFocusNode),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(200, 15, 300, 15),
-                        child: TextFormField(
-                          controller: foodquantity,
-                          key: const ValueKey('quantity'),
-                          focusNode: _quantityFocusNode,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          textInputAction: TextInputAction.next,
-                          onEditingComplete: _submitForm,
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                              border: UnderlineInputBorder(),
-                              filled: true,
-                              labelText: 'quantity'),
-                          onSaved: (value) {
-                            foodquantity.text = value!;
-                          },
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(width: 10),
-                          _isLoading
-                              ? const CircularProgressIndicator()
-                              : ElevatedButton(
-                                  style: ButtonStyle(
-                                      shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30.0),
-                                      side: BorderSide(
-                                          color: ColorsConsts.backgroundColor),
-                                    ),
-                                  )),
-                                  onPressed: () async {
-                                    addMenuTofirestore(
-                                        foodid.text.toString(),
-                                        foodname.text.toString(),
-                                        fooddescription.text.toString(),
-                                        foodingredients.text.toString(),
-                                        foodprice.text.toString(),
-                                        foodquantity.text.toString());
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Text(
-                                        'Add',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 25),
-                                      ),
-                                    ],
-                                  ))
-                        ],
-                      ),
-                    ]))
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }*/
+  }
 }

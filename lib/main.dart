@@ -1,17 +1,12 @@
-import 'dart:ui';
-
+// ignore_for_file: import_of_legacy_library_into_null_safe
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/Customer/home.dart';
 import 'package:food_delivery_app/consts/themedark.dart';
 import 'package:food_delivery_app/firebase_options.dart';
 import 'package:food_delivery_app/provider/authprovider.dart';
 import 'package:food_delivery_app/provider/darkthem.dart';
-
 import 'package:food_delivery_app/screens/login_screen.dart';
 import 'package:provider/provider.dart';
-
-import 'Restuarant/nav_bar/bottombar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,7 +48,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'MAJET',
             theme: Styles.themeData(themeChangeProvider.darkTheme, context),
-            home: const CustHome(),
+            home:   LoginScreen(),
           );
         }));
   }

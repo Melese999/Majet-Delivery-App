@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class Settings extends StatefulWidget {
-  const Settings({Key? key}) : super(key: key);
+class Settingss extends StatefulWidget {
+  const Settingss({Key? key}) : super(key: key);
 
   @override
-  State<Settings> createState() => _SettingsState();
+  State<Settingss> createState() => _SettingssState();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingssState extends State<Settingss> {
   @override
   Widget build(BuildContext context) {
     return Container();

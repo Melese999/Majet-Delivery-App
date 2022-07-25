@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:food_delivery_app/services/user.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:geocoder/geocoder.dart';
 import 'package:location/location.dart';
@@ -38,8 +39,8 @@ class AuthProvider extends ChangeNotifier {
       }
     }
     _locationData = await location.getLocation();
-    this.resLatitude = _locationData.latitude!;
-    this.resLongtiude = _locationData.longitude!;
+    resLatitude = _locationData.latitude!;
+    resLongtiude = _locationData.longitude!;
 
     final coordinates =
         Coordinates(_locationData.latitude, _locationData.longitude);
@@ -53,29 +54,51 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<UserCredential> registerRestuarant(email, password) async {
-    this.email = email;
-    notifyListeners();
+    UserCredential credential;
 
-    UserCredential userCredential =
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
+    this.email = email;
+    notifyListeners();
+    return credential;
+  }
 
+  Future<UserCredential> loginRes(email, password) async {
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
     return userCredential;
   }
 
+  Future<void> resetPass(email) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      error = e.code;
+      notifyListeners();
+    } catch (e) {
+      error = e.toString();
+    }
+  }
+
   Future<void> saveRestuarantToDb(
-      String firstname, String lastname, String password) async {
+      String firstname, String lastname, String role) async {
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = FirebaseAuth.instance.currentUser;
-    await FirebaseFirestore.instance.collection('users').doc(user?.uid).set({
+    UserModel userModel = UserModel();
+    userModel.email = email;
+    userModel.uid = user!.uid;
+    userModel.role = role;
+    userModel.toMap();
+    await firebaseFirestore.collection("Alluser").doc(user.uid).set({
       "firstname": firstname,
       "lastname": lastname,
-      "email": this.email,
-      "password": password,
-      "address": '${this.placeName}:${this.resAdress}',
-      'location': GeoPoint(resLatitude, resLongtiude)
+      "email": email,
+    //  "address": '${placeName}:${resAdress}',
+     // 'location': GeoPoint(resLatitude, resLongtiude),
+      'role': role
     });
-    return null;
+    return;
   }
 }
