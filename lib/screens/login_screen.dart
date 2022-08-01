@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final LoginButton = Material(
       elevation: 0,
       borderRadius: BorderRadius.circular(30),
-      color: Color(0xffF96501),
+      color: const Color(0xffF96501),
       child: MaterialButton(
         onPressed: () async {
           if (_formkey.currentState!.validate()) {

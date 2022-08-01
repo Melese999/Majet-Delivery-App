@@ -208,7 +208,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final signupButton = Material(
       elevation: 0,
       borderRadius: BorderRadius.circular(30),
-      color: const Color(0xffF96501),
+      color: Color.fromARGB(255, 22, 14, 8),
       child: MaterialButton(
         onPressed: () {
           if (_formkey.currentState!.validate()) {
