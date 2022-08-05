@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, avoid_print, library_private_types_in_public_api
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,6 +12,8 @@ import 'package:food_delivery_app/services/restpass.dart';
 import 'package:food_delivery_app/services/user.dart'; 
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -141,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              resetPassword()));
+                                              const resetPassword()));
                                 },
                                 child: const Text(
                                   "Forget Password",
@@ -163,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            RegisterScreen()));
+                                            const RegisterScreen()));
                               },
                               child: const Text(
                                 "create Account",

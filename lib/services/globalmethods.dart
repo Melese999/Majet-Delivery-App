@@ -25,7 +25,7 @@ class GlobalMethods {
                     fct();
                     Navigator.pop(context);
                   },
-                  child: Text('ok'))
+                  child: const Text('ok'))
             ],
           );
         });
@@ -52,7 +52,7 @@ class GlobalMethods {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text('Ok'))
+                  child: const Text('Ok'))
             ],
           );
         });

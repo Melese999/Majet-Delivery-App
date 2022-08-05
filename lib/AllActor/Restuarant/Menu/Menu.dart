@@ -63,7 +63,7 @@ class _menuState extends State<menu> {
                                           fontFamily: "TimenewsRoman"),
                                     ),
                                     Text(
-                                      documentSnapshot['price'],
+                                      documentSnapshot['price'].toString(),
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                           color: Color(0xffF96501),
@@ -71,7 +71,7 @@ class _menuState extends State<menu> {
                                           fontFamily: "TimenewsRoman"),
                                     ),
                                     Text(
-                                      documentSnapshot['quantity'],
+                                      documentSnapshot['quantity'].toString(),
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                           color: Color(0xffF96501),
@@ -96,9 +96,9 @@ class _menuState extends State<menu> {
                                         foodingredients.text =
                                             documentSnapshot['ingredients'];
                                         foodquantity.text =
-                                            documentSnapshot['quantity'];
+                                            documentSnapshot['quantity'].toString();
                                         foodprice.text =
-                                            documentSnapshot['price'];
+                                            documentSnapshot['price'].toString();
                                         showDialog(
                                             context: context,
                                             builder: (context) => Dialog(
@@ -205,9 +205,9 @@ class _menuState extends State<menu> {
                                                                           'ingredients':
                                                                               foodingredients.text,
                                                                           'price':
-                                                                              foodprice.text,
+                                                                              double.parse(foodprice.text),
                                                                           'quantity':
-                                                                              foodquantity.text
+                                                                              double.parse(foodquantity.text)
                                                                         });
                                                                         foodname
                                                                             .clear();

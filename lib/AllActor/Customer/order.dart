@@ -1,277 +1,160 @@
-// ignore_for_file: dead_code
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
- 
- 
 
-class Order extends StatefulWidget {
-  const Order({Key? key}) : super(key: key);
-
+class ViewOrder extends StatefulWidget {
+  const ViewOrder({Key? key}) : super(key: key);
   @override
-  State<Order> createState() => _OrderState();
+  State<ViewOrder> createState() => _ViewOrder();
 }
 
-class _OrderState extends State<Order> {
+class _ViewOrder extends State<ViewOrder> {
   User? check = FirebaseAuth.instance.currentUser;
+  double AllTotal = 0.0;
   @override
   Widget build(BuildContext context) {
-    final foodname = TextEditingController();
-    final fooddescription = TextEditingController();
-    final foodingredients = TextEditingController();
-    final foodprice = TextEditingController();
-    final foodquantity = TextEditingController();
-
     return Scaffold(
-      appBar: AppBar(title: const Text('Order page')),
-      body: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection("Order").snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              print("something went wrong");
-            } else if (snapshot.hasData || snapshot.data != null) {
-              return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: snapshot.data?.docs.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    QueryDocumentSnapshot<Object?>? documentSnapshot =
-                        snapshot.data?.docs[index];
-                    if (documentSnapshot!['restuarant'] == check!.email) {
-                      return Dismissible(
-                          key: Key(index.toString()),
-                          child: Card(
-                              elevation: 1,
-                              child: ListTile(
-                                  dense: false,
-                                  title: Text((documentSnapshot['name'])),
-                                  subtitle: Column(children: [
-                                    Text(
-                                      documentSnapshot['description'],
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                          color: Color(0xffF96501),
-                                          fontSize: 15,
-                                          fontFamily: "TimenewsRoman"),
+        appBar: AppBar(title: const Text('order page')),
+        body: Column(children: [
+          StreamBuilder<QuerySnapshot>(
+              stream:
+                  FirebaseFirestore.instance.collection("orders").snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  print("something went wrong");
+                } else if (snapshot.hasData || snapshot.data != null) {
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data?.docs.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        QueryDocumentSnapshot<Object?>? documentSnapshot =
+                            snapshot.data?.docs[index];
+                        int quantity = documentSnapshot!['quantity'];
+                        double price = documentSnapshot['price'];
+                        if (documentSnapshot['customer'] == check!.email) {
+                          double total = quantity * price;
+                          z= total;
+                          return Container(
+                              height: 120,
+                              decoration: const BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(color: Colors.grey))),
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+                                child: Stack(
+                                  children: [
+                                    Row(children: [
+                                      SizedBox(
+                                        height: 120,
+                                        width: 120,
+                                        child: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 0, 20, 0),
+                                          child: Image.network(
+                                            documentSnapshot['foodimage'],
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            documentSnapshot['name'],
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(documentSnapshot['price']
+                                              .toString()),
+                                          const SizedBox(height: 50),
+                                          Text("calculated price $total")
+                                        ],
+                                      )
+                                    ]),
+                                    Positioned(
+                                      right: 0.0,
+                                      bottom: 0.0,
+                                      child: Row(children: [
+                                        Center(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: <Widget>[
+                                              InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      if (documentSnapshot[
+                                                              'quantity'] <
+                                                          1) {
+                                                        snapshot
+                                                            .data
+                                                            ?.docs[index]
+                                                            .reference
+                                                            .update({
+                                                          'ShouldVisible':
+                                                              !documentSnapshot[
+                                                                  'ShouldVisible']
+                                                        });
+                                                      } else {
+                                                        if (AllTotal > 0) {
+                                                          AllTotal -=
+                                                              documentSnapshot[
+                                                                  'price'];
+                                                        }
+                                                        quantity--;
+                                                        snapshot
+                                                            .data
+                                                            ?.docs[index]
+                                                            .reference
+                                                            .update({
+                                                          'quantity': quantity,
+                                                        });
+                                                      }
+                                                    });
+                                                  },
+                                                  child:
+                                                      const Icon(Icons.remove)),
+                                              Text(
+                                                quantity.toString(),
+                                                style: const TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      AllTotal +=
+                                                          documentSnapshot[
+                                                              'price'];                                                    
+                                                      quantity++;
+                                                      snapshot.data?.docs[index]
+                                                          .reference
+                                                          .update({
+                                                        'quantity': quantity,
+                                                      });
+                                                    });
+                                                  },
+                                                  child: const Icon(
+                                                    Icons.add,
+                                                  )),
+                                            ],
+                                          ),
+                                        )
+                                      ]),
                                     ),
-                                    Text(
-                                      documentSnapshot['ingredients'],
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                          color: Color(0xffF96501),
-                                          fontSize: 15,
-                                          fontFamily: "TimenewsRoman"),
-                                    ),
-                                    Text(
-                                      documentSnapshot['price'],
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                          color: Color(0xffF96501),
-                                          fontSize: 15,
-                                          fontFamily: "TimenewsRoman"),
-                                    ),
-                                    Text(
-                                      documentSnapshot['quantity'],
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                          color: Color(0xffF96501),
-                                          fontSize: 15,
-                                          fontFamily: "TimenewsRoman"),
-                                    )
-                                  ]),
-                                  trailing: Image.network(
-                                      documentSnapshot['imageurl'],
-                                      fit: BoxFit.cover,
-                                      height: 400,
-                                      width: 100), 
-                                  leading: IconButton(
-                                      icon: const Icon(Icons.edit),
-                                      color: const Color.fromARGB(
-                                          255, 104, 88, 87),
-                                      onPressed: () {
-                                        foodname.text =
-                                            documentSnapshot['name'];
-                                        fooddescription.text =
-                                            documentSnapshot["description"];
-                                        foodingredients.text =
-                                            documentSnapshot['ingredients'];
-                                        foodquantity.text =
-                                            documentSnapshot['quantity'];
-                                        foodprice.text =
-                                            documentSnapshot['price'];
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) => Dialog(
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        border: Border.all(
-                                                            color: Colors.red,
-                                                            width: 5),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(0)),
-                                                    child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(5.0),
-                                                        child: ListView(
-                                                            shrinkWrap: true,
-                                                            children: [
-                                                              const Text(
-                                                                "Edit The food ",
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontSize:
-                                                                        25,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    fontFamily:
-                                                                        "TimenewsRoman"),
-                                                              ),
-                                                              const SizedBox(
-                                                                height: 20,
-                                                              ),
-                                                              _buildTextField(
-                                                                  foodname,
-                                                                  'Name'),
-                                                              const SizedBox(
-                                                                height: 20,
-                                                              ),
-                                                              _buildTextField(
-                                                                  fooddescription,
-                                                                  'description'),
-                                                              const SizedBox(
-                                                                height: 20,
-                                                              ),
-                                                              _buildTextField(
-                                                                  foodingredients,
-                                                                  'ingredients'),
-                                                              const SizedBox(
-                                                                height: 20,
-                                                              ),
-                                                              _buildTextField(
-                                                                  foodquantity,
-                                                                  'quantity'),
-                                                              const SizedBox(
-                                                                height: 20,
-                                                              ),
-                                                              _buildTextField(
-                                                                  foodprice,
-                                                                  'price'),
-                                                              const SizedBox(
-                                                                height: 20,
-                                                              ),
-                                                              Material(
-                                                                  elevation: 0,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              30),
-                                                                  child:
-                                                                      MaterialButton(
-                                                                    padding:
-                                                                        const EdgeInsets.all(
-                                                                            26),
-                                                                    onPressed:
-                                                                        () {
-                                                                      if (foodname.text.isNotEmpty &&
-                                                                          foodingredients
-                                                                              .text
-                                                                              .isNotEmpty &&
-                                                                          fooddescription
-                                                                              .text
-                                                                              .isNotEmpty &&
-                                                                          foodprice
-                                                                              .text
-                                                                              .isNotEmpty &&
-                                                                          foodquantity
-                                                                              .text
-                                                                              .isNotEmpty) {
-                                                                        snapshot
-                                                                            .data
-                                                                            ?.docs[index]
-                                                                            .reference
-                                                                            .update({
-                                                                          'name':
-                                                                              foodname.text,
-                                                                          'description':
-                                                                              fooddescription.text,
-                                                                          'ingredients':
-                                                                              foodingredients.text,
-                                                                          'price':
-                                                                              foodprice.text,
-                                                                          'quantity':
-                                                                              foodquantity.text
-                                                                        });
-                                                                        foodname
-                                                                            .clear();
-                                                                        fooddescription
-                                                                            .clear();
-                                                                        foodingredients
-                                                                            .clear();
-                                                                        foodprice
-                                                                            .clear();
-                                                                        foodquantity
-                                                                            .clear();
-                                                                        Navigator.pop(
-                                                                            context);
-                                                                      }
-                                                                    },
-                                                                    child:
-                                                                        const Text(
-                                                                      "update",
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                      style: TextStyle(
-                                                                          color: Color(
-                                                                              0xffF96501),
-                                                                          fontSize:
-                                                                              25,
-                                                                          fontFamily:
-                                                                              "TimenewsRoman"),
-                                                                    ),
-                                                                  )),
-                                                            ])),
-                                                  ),
-                                                ));
-                                      }))));
-                    }
-                    return Container();
-                  });
-            }
-
-            return const Center();
-          }),
-      
-    );
-  }
-
-  _buildTextField(TextEditingController controller, String s) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-      child: TextFormField(
-          onSaved: (value) {
-            controller.text = value!;
-          },
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter some text';
-            }
-            return null;
-          },
-          controller: controller,
-          style: const TextStyle(color: Colors.black),
-          decoration: InputDecoration(
-              labelText: s,
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(10)))),
-    );
+                                  ],
+                                ),
+                              ));
+                        }
+                        return Container();
+                      });
+                }
+                return const Center();
+              }),
+          Text("the overall price is $AllTotal"),
+          ElevatedButton(onPressed: (() {}), child: const Text("place order")),
+        ]));
   }
 }

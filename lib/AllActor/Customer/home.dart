@@ -1,22 +1,16 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/AllActor/Delivery/hh.dart';
-import 'package:food_delivery_app/AllActor/Restuarant/nav_bar/res_nav_bar.dart';
+import 'package:food_delivery_app/AllActor/Customer/cusNavBar.dart';
+import 'package:food_delivery_app/AllActor/Customer/slider/slider.dart';
+import 'package:food_delivery_app/AllActor/Customer/viewMenu.dart';
 
 final List<String> imagesList = [
   'https://cdn.pixabay.com/photo/2020/11/01/23/22/breakfast-5705180_1280.jpg',
   'https://cdn.pixabay.com/photo/2016/11/18/19/00/breads-1836411_1280.jpg',
   'https://cdn.pixabay.com/photo/2019/01/14/17/25/gelato-3932596_1280.jpg',
   'https://cdn.pixabay.com/photo/2017/04/04/18/07/ice-cream-2202561_1280.jpg',
-];
-final List<String> titles = [
-  ' Coffee ',
-  ' Bread ',
-  ' Gelato ',
-  ' Ice Cream ',
 ];
 
 class CustHome extends StatefulWidget {
@@ -31,9 +25,9 @@ class _CustHomeState extends State<CustHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const res_nav_bar(),
+      drawer: const Cusnavbar(),
       appBar: AppBar(
-        elevation: 0,        
+        elevation: 0,
         title: const Text('CustHome Page'),
         centerTitle: true,
         bottom: const PreferredSize(
@@ -88,17 +82,6 @@ class _CustHomeState extends State<CustHome> {
                             fit: BoxFit.cover,
                             width: double.infinity,
                           ),
-                          Center(
-                            child: Text(
-                              titles[_currentIndex],
-                              style: const TextStyle(
-                                fontSize: 24.0,
-                                fontWeight: FontWeight.bold,
-                                backgroundColor: Colors.black45,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -124,11 +107,14 @@ class _CustHomeState extends State<CustHome> {
                 ),
               );
             }).toList()),
-            const Expanded(
-              child: dd())
-            ]
-            ),
-        
+        const Expanded(child: SliderImage()),
+        ElevatedButton(
+            onPressed: () {
+             Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const ViewMenu()));
+            },
+            child: const Text('View Available menu'))
+      ]),
     );
   }
 }

@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:food_delivery_app/consts/colors.dart';
 import 'package:food_delivery_app/services/globalmethods.dart';
 import 'package:image_picker/image_picker.dart';
- 
 
 class AddMenu extends StatefulWidget {
   const AddMenu({Key? key}) : super(key: key);
@@ -81,7 +80,7 @@ class _AddMenu extends State<AddMenu> {
   }
 
   Future<void> addMenuTofirestore(String id, String name, String description,
-      String ingredients, String price, String quantity) async {
+      String ingredients, double price, int quantity) async {
     var name = foodname.text;
     var imagefile = FirebaseStorage.instance.ref().child('images/$name.jpg');
     await imagefile.putFile(_pickedImage!);
@@ -117,13 +116,15 @@ class _AddMenu extends State<AddMenu> {
         } else {
           setState(() {
             _isLoading = true;
+            double pr = double.parse(foodprice.text);
+            int qua = int.parse(foodquantity.text);
             addMenuTofirestore(
               foodid.text.toString(),
               foodname.text.toString(),
               fooddescription.text.toString(),
               foodingredients.text.toString(),
-              foodprice.text.toString(),
-              foodquantity.text.toString(),
+              pr,
+              qua,
             );
           });
         }

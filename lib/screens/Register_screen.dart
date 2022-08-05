@@ -1,5 +1,6 @@
+// ignore_for_file: unnecessary_null_comparison, library_private_types_in_public_api
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/provider/authprovider.dart';
 import 'package:food_delivery_app/screens/login_screen.dart';
@@ -9,6 +10,8 @@ import 'package:food_delivery_app/services/fire_auth.dart';
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
+
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
@@ -16,7 +19,6 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   bool _odscureText = true;
   FireAuth xx = FireAuth();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final firestore = FirebaseFirestore.instance.collection("users");
   //final database = FirebaseDatabase.instance.ref();
   var regName = '/^[a-zA-Z]+ [a-zA-Z]+/';
@@ -31,7 +33,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _userData = Provider.of<AuthProvider>(context, listen: false);
+    final userData = Provider.of<AuthProvider>(context, listen: false);
     final firstnamefield = TextFormField(
       autofocus: false,
       controller: firstNameEditingController,
@@ -94,47 +96,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
               .hasMatch(value)) {
             return 'invalid email';
-          }
-          return null;
-        });
-    final phonefield = TextFormField(
-        autofocus: false,
-        maxLines: 3,
-        controller: adressEditingController,
-        keyboardType: TextInputType.text,
-        onSaved: (value) {
-          adressEditingController.text = value!;
-        },
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-            prefixIcon: const Icon(Icons.contact_mail_outlined),
-            contentPadding: const EdgeInsets.fromLTRB(15, 20, 10, 10),
-            labelText: "location",
-            suffixIcon: IconButton(
-              icon: const Icon(Icons.location_searching),
-              onPressed: () {
-                adressEditingController.text = 'locating ...\n please wait ...';
-                _userData.getCurrentAdress().then((address) {
-                  if (address != null) {
-                    setState(() {
-                      adressEditingController.text =
-                          '${_userData.placeName}\n${_userData.resAdress}';
-                    });
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('couldnot find location ... try agin')));
-                  }
-                });
-              },
-            ),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'please press navigation button';
-          }
-          if (_userData.resLatitude == null) {
-            return 'please press navigation button';
           }
           return null;
         });
@@ -208,7 +169,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final signupButton = Material(
       elevation: 0,
       borderRadius: BorderRadius.circular(30),
-      color: Color.fromARGB(255, 22, 14, 8),
+      color: const Color.fromARGB(255, 22, 14, 8),
       child: MaterialButton(
         onPressed: () {
           if (_formkey.currentState!.validate()) {
@@ -219,12 +180,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
             );
             String role = 'user';
 
-            _userData
+            userData
                 .registerRestuarant(
                     emailEditingController.text, passwordEditingController.text)
                 .then((credential) {
               if (credential.user!.uid != null) {
-                _userData.saveRestuarantToDb(firstNameEditingController.text,
+                userData.saveRestuarantToDb(firstNameEditingController.text,
                     lastNameEditingController.text, role);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => LoginScreen()));
@@ -247,14 +208,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
         appBar: AppBar(
             leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         )),
         backgroundColor: const Color(0xffFFC4A2),
         body: Center(
             child: SingleChildScrollView(
                 child: Container(
-                    margin: EdgeInsets.all(30),
+                    margin: const EdgeInsets.all(30),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: Colors.red, width: 5),

@@ -1,5 +1,6 @@
+// ignore_for_file: camel_case_types
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/provider/authprovider.dart';
 import 'package:food_delivery_app/screens/login_screen.dart';
@@ -9,13 +10,14 @@ import 'package:food_delivery_app/services/fire_auth.dart';
 import 'package:provider/provider.dart';
 
 class resetPassword extends StatefulWidget {
+  const resetPassword({Key? key}) : super(key: key);
+
   @override
   _resetPasswordState createState() => _resetPasswordState();
 }
 
 class _resetPasswordState extends State<resetPassword> {
   FireAuth xx = FireAuth();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final firestore = FirebaseFirestore.instance.collection("users");
   //final database = FirebaseDatabase.instance.ref();
 

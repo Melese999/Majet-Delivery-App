@@ -2,6 +2,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/AllActor/Customer/home.dart';
+import 'package:food_delivery_app/AllActor/Customer/order.dart';
+import 'package:food_delivery_app/AllActor/Customer/viewMenu.dart';
 import 'package:food_delivery_app/consts/themedark.dart';
 import 'package:food_delivery_app/firebase_options.dart';
 import 'package:food_delivery_app/provider/authprovider.dart';
@@ -49,7 +51,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'MAJET',
             theme: Styles.themeData(themeChangeProvider.darkTheme, context),
-            home:   LoginScreen(),
+            home:  const LoginScreen(),
           );
         }));
   }

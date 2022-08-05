@@ -52,6 +52,9 @@ dependencies:
   geolocator: ^9.0.1  
   carousel_slider: ^3.0.0  
   fluttertoast: ^8.0.9
+  rxdart: ^0.27.5
+
+ 
  
 
   
