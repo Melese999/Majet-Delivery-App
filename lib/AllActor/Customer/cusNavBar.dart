@@ -1,21 +1,19 @@
-// ignore_for_file: camel_case_types, deprecated_member_use, prefer_typing_uninitialized_variables
+ // ignore_for_file: import_of_legacy_library_into_null_safe, deprecated_member_use
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-// ignore: import_of_legacy_library_into_null_safe
+import 'package:flutter/services.dart'; 
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:food_delivery_app/AllActor/Customer/cus_feedback.dart';
+import 'package:food_delivery_app/AllActor/Customer/home.dart';
 import 'package:food_delivery_app/AllActor/Customer/order.dart';
 import 'package:food_delivery_app/AllActor/Customer/viewMenu.dart';
-import 'package:food_delivery_app/AllActor/Restuarant/home.dart';
 import 'package:food_delivery_app/app_setting/settingss.dart';
 import 'package:food_delivery_app/provider/darkthem.dart';
 import 'package:food_delivery_app/screens/login_screen.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:list_tile_switch/list_tile_switch.dart';
-// ignore: import_of_legacy_library_into_null_safe
+import 'package:food_delivery_app/services/Accounts.dart'; 
+import 'package:list_tile_switch/list_tile_switch.dart'; 
 import 'package:provider/provider.dart';
 
 class Cusnavbar extends StatefulWidget {
@@ -24,31 +22,35 @@ class Cusnavbar extends StatefulWidget {
   @override
   State<Cusnavbar> createState() => _CusnavbarState();
 }
+
 class _CusnavbarState extends State<Cusnavbar> {
   User? auth = FirebaseAuth.instance.currentUser;
-  var resdata;
+  List<String> all = [];
   @override
   void initState() {
     getResdata();
     super.initState();
   }
+  Account loggedInUser = Account();
   Future<DocumentSnapshot> getResdata() async {
     var firestore = await FirebaseFirestore.instance
-        .collection("users")
+        .collection("Alluser")
         .doc(auth!.uid)
-        .get();
-    setState(() {
-      resdata = firestore;
+        .get()
+        .then((value) {
+      loggedInUser = Account.fromMap(value.data());
     });
+
     return firestore;
   }
+
   Future exitDialog() async {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Are you sure?'),
         content: const Text('do you want exit from the app'),
-        actions: [         
+        actions: [
           FlatButton(
             child: const Text("EXIT"),
             onPressed: () {
@@ -75,13 +77,13 @@ class _CusnavbarState extends State<Cusnavbar> {
           return Future.value(false);
         },
         child: Drawer(
-          child: ListView(          
+          child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              const UserAccountsDrawerHeader(
-                accountName: Text('Majet'),
-                accountEmail: Text('fetomedanit@gmail.com'),
-                currentAccountPicture: CircleAvatar(
+              UserAccountsDrawerHeader(
+                accountName: Text(loggedInUser.firstName.toString()),
+                accountEmail: Text(auth!.email.toString()),
+                currentAccountPicture: const CircleAvatar(
                   backgroundColor: Colors.orange,
                   child: Text(
                     'M',
@@ -94,16 +96,20 @@ class _CusnavbarState extends State<Cusnavbar> {
                 title: const Text('Menu'),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const ViewMenu()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ViewMenu()));
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.home),
                 title: const Text('Home'),
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const home()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CustHome()));
                 },
               ),
               ListTile(
@@ -143,9 +149,9 @@ class _CusnavbarState extends State<Cusnavbar> {
                 onTap: () async {
                   FirebaseAuth.instance.signOut().then((value) {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>  const LoginScreen()));
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()));
                   });
                 },
               ),

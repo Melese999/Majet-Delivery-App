@@ -18,69 +18,63 @@ class _SliderImageState extends State<SliderImage> {
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection("menu").snapshots(),
-        builder: (context, snapshot) {             
-                return GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 300,
-                            childAspectRatio: 2 / 2,
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20),
-                    itemCount: 4,
-                    itemBuilder: (BuildContext ctx, index) {
-                  
-                      QueryDocumentSnapshot<Object?>? documentSnapshot =
-                          snapshot.data?.docs[index];                      
-                      String name = documentSnapshot!['name'];
-                      int  price = documentSnapshot['quantity'];
-                      int quantity =  1;
-                      String total = '$name $price ';                     
-                      return Container(
-                        margin: const EdgeInsets.fromLTRB(20, 0, 10, 0),
-                        alignment: const Alignment(0.5, 0.8),
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image:
-                                    NetworkImage(documentSnapshot['imageurl'])),
-                            color: Colors.white,
-                            border: Border.all(color: Colors.red, width: 5),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(total,
-                                style: const TextStyle(
-                                    // your text
-                                    color: Colors.white)),
-                            GestureDetector(
-                                onTap: () {                            
-                                     
-                                      aSliderImageOrder(
-                                          documentSnapshot['imageurl'],
-                                          documentSnapshot['name'],
-                                          documentSnapshot['price'],
-                                          quantity,
-                                          documentSnapshot['restuarant']);
-                                     
-                                },
-                                child: const Text(
-                                  'add',
-                                  style: TextStyle(color: Colors.green),
-                                )),
-                          ],
-                        ), // your button beneath text
-                      );
-                    },  );
-              });
-        }
-
-
-  void aSliderImageOrder(String image,
-      String name, double price, int quantity, String restuarantname) async {
+        builder: (context, snapshot) {
+          return GridView.builder(
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 300,
+                childAspectRatio: 2 / 2,
+                crossAxisSpacing: 20,
+                mainAxisSpacing: 20),
+            itemCount: 4,
+            itemBuilder: (BuildContext ctx, index) {
+              QueryDocumentSnapshot<Object?>? documentSnapshot =
+                  snapshot.data?.docs[index];
+              String name = documentSnapshot!['name'];
+              int price = documentSnapshot['quantity'];
+              int quantity = 1;
+              String total = '$name $price ';
+              return Container(
+                margin: const EdgeInsets.fromLTRB(20, 0, 10, 0),
+                alignment: const Alignment(0.5, 0.8),
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(documentSnapshot['imageurl'])),
+                    color: Colors.white,
+                    border: Border.all(color: Colors.red, width: 5),
+                    borderRadius: BorderRadius.circular(15)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(total,
+                        style: const TextStyle(
+                            // your text
+                            color: Colors.white)),
+                    GestureDetector(
+                        onTap: () {
+                          addOrder(
+                              documentSnapshot['imageurl'],
+                              documentSnapshot['name'],
+                              documentSnapshot['price'],
+                              quantity,
+                              documentSnapshot['restuarant']);
+                        },
+                        child: const Text(
+                          'add',
+                          style: TextStyle(color: Colors.green),
+                        )),
+                  ],
+                ), // your button beneath text
+              );
+            },
+          );
+        });
+  }
+  void addOrder(String image, String name, double price, int quantity,
+      String restuarantname) async {
     await order.add({
       'ShouldVisible': false,
-      'foodimage':image,
+      'foodimage': image,
       'name': name,
       'price': price,
       'quantity': quantity,
@@ -88,7 +82,7 @@ class _SliderImageState extends State<SliderImage> {
       'customer': user?.email
     }).then((d) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Order ASliderImageed")));
+          .showSnackBar(const SnackBar(content: Text("Order Added")));
     });
   }
 }

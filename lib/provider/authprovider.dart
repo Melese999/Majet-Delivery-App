@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:food_delivery_app/services/Accounts.dart';
 import 'package:food_delivery_app/services/user.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:geocoder/geocoder.dart';
@@ -87,16 +88,20 @@ class AuthProvider extends ChangeNotifier {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = FirebaseAuth.instance.currentUser;
     UserModel userModel = UserModel();
-    userModel.email = email;
-    userModel.uid = user!.uid;
-    userModel.role = role;
+    Account account = Account();
+    userModel.email = account.email = email;
+    userModel.uid = account.uid = user!.uid;
+    userModel.role = account.role = role;
+    account.firstName = firstname;
+    account.lastname = lastname;
     userModel.toMap();
+    account.toMap();
     await firebaseFirestore.collection("Alluser").doc(user.uid).set({
       "firstname": firstname,
       "lastname": lastname,
       "email": email,
-    //  "address": '${placeName}:${resAdress}',
-     // 'location': GeoPoint(resLatitude, resLongtiude),
+      //"address": '${placeName}:${resAdress}',
+      //'location': GeoPoint(resLatitude, resLongtiude),
       'role': role
     });
     return;

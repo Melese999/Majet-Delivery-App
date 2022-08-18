@@ -45,7 +45,6 @@ class _res_nav_barState extends State<res_nav_bar> {
     });
     return firestore;
   }
-
   Future exitDialog() {
     return showDialog(
       context: context,
@@ -83,7 +82,7 @@ class _res_nav_barState extends State<res_nav_bar> {
             padding: EdgeInsets.zero,
             children: [
                UserAccountsDrawerHeader(
-                accountName: Text('Majet'),
+                accountName: const Text('Majet'),
                 accountEmail: Text(auth!.email.toString()),
                 currentAccountPicture: CircleAvatar(
                   backgroundColor: Colors.orange,
