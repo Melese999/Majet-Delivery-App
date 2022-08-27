@@ -129,7 +129,7 @@ class _CusnavbarState extends State<Cusnavbar> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const cus_feedback()));
+                          builder: (context) => const Cus_Feedback()));
                 },
               ),
               const Divider(),

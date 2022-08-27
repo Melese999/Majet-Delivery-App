@@ -110,11 +110,15 @@ class _CustHomeState extends State<CustHome> {
         const Expanded(child: SliderImage()),
         ElevatedButton(
             onPressed: () {
-             Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const ViewMenu()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const ViewMenu()));
             },
             child: const Text('View Available menu'))
       ]),
     );
+  }
+
+  Widget buildSuggestions(BuildContext context) {
+    return Center();
   }
 }

@@ -51,8 +51,7 @@ class _res_view_order extends State<res_view_order> {
                                           color: Color(0xffF96501),
                                           fontSize: 15,
                                           fontFamily: "TimenewsRoman"),
-                                    ),
-                                    
+                                    ),                                  
                                                                  
                                   ]),
                                   trailing: Image.network(

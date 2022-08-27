@@ -28,7 +28,7 @@ class _AdminHomeState extends State<AdminHome> {
                 MaterialPageRoute(builder: (context) => const Register()));
           },
           child: const Text(
-            "Register Restuarant",
+            "Manage Restuarant",
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Colors.black,
@@ -68,7 +68,7 @@ class _AdminHomeState extends State<AdminHome> {
                 MaterialPageRoute(builder: (context) => const Register()));
           },
           child: const Text(
-            "Register Delivery",
+            "Manage Delivery",
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Colors.black,

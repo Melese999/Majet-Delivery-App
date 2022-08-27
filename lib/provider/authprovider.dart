@@ -18,7 +18,7 @@ class AuthProvider extends ChangeNotifier {
   late String email;
 
   Future getCurrentAdress() async {
-    Location location = new Location();
+    Location location = Location();
 
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;

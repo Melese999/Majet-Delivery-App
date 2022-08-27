@@ -237,34 +237,7 @@ class _Register extends State<Register> {
         }
         return null;
       },
-    );
-    final selectedfield = DropdownButtonFormField(
-      decoration: const InputDecoration(
-        enabledBorder: OutlineInputBorder(         
-          borderSide: BorderSide(color: Colors.black, width: 2),
-        ),
-        focusedBorder: OutlineInputBorder(          
-          borderSide: BorderSide(color: Colors.black, width: 2),
-        ),
-        filled: true,
-      ),
-      value: role,
-      onChanged: (String? newValue) {
-        setState(() {
-          role = newValue!;
-        });
-      },
-      items: <String>['restuarant', 'admin', 'delivery']
-          .map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(
-            value,
-            style: const TextStyle(fontSize: 20),
-          ),
-        );
-      }).toList(),
-    );
+    );     
     final resetButton = Material(
       elevation: 0,
       borderRadius: BorderRadius.circular(30),
@@ -442,9 +415,7 @@ class _Register extends State<Register> {
                                 emailfield,
                                 const SizedBox(height: 25),
                                 phonefield,
-                                const SizedBox(height: 25),
-                                selectedfield,
-                                const SizedBox(height: 25),
+                                const SizedBox(height: 25),                                 
                                 Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,

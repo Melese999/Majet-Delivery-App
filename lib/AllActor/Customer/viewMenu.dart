@@ -32,7 +32,7 @@ class _ViewMenu extends State<ViewMenu> {
               child: TextField(
                 decoration: InputDecoration(
                   hintText: 'search your favorite restuarant',
-                  prefixIcon: Icon(Icons.search),
+                  icon:Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),

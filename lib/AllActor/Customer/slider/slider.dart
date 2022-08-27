@@ -10,7 +10,6 @@ class SliderImage extends StatefulWidget {
   @override
   State<SliderImage> createState() => _SliderImageState();
 }
-
 class _SliderImageState extends State<SliderImage> {
   User? user = FirebaseAuth.instance.currentUser;
   final order = FirebaseFirestore.instance.collection("orders");
