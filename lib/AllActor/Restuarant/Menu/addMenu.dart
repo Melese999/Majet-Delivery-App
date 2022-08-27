@@ -85,7 +85,6 @@ class _AddMenu extends State<AddMenu> {
     var imagefile = FirebaseStorage.instance.ref().child('images/$name.jpg');
     await imagefile.putFile(_pickedImage!);
     url = await imagefile.getDownloadURL();
-
     firestore.add({
       'restuarant': e!.email,
       'name': name,

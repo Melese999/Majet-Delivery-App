@@ -207,7 +207,7 @@ class _menuState extends State<menu> {
                                                                           'price':
                                                                               double.parse(foodprice.text),
                                                                           'quantity':
-                                                                              double.parse(foodquantity.text)
+                                                                              int.parse(foodquantity.text)
                                                                         });
                                                                         foodname
                                                                             .clear();

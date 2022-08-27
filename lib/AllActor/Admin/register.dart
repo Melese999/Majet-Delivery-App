@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/consts/colors.dart';
 import 'package:food_delivery_app/services/fire_auth.dart';
@@ -27,6 +28,7 @@ class _Register extends State<Register> {
   final picker = ImagePicker();
   FireAuth xx = FireAuth();
   final firestore = FirebaseFirestore.instance.collection("users");
+    var imagefile = FirebaseStorage.instance.ref().child('images.jpg');
   //final database = FirebaseDatabase.instance.ref();
   var regName = '/^[a-zA-Z]+ [a-zA-Z]+/';
   var firstNameEditingController = TextEditingController();

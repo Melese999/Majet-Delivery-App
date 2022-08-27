@@ -45,7 +45,7 @@ class _res_view_order extends State<res_view_order> {
                                   title: Text((documentSnapshot!['name'])),
                                   subtitle: Column(children: [
                                     Text(
-                                      documentSnapshot['price'],
+                                      documentSnapshot['price'].toString(),
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                           color: Color(0xffF96501),
