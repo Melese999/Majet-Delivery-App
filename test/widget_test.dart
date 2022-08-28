@@ -7,22 +7,26 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:food_delivery_app/main.dart';
+import 'package:food_delivery_app/screens/login_screen.dart';
+
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  testWidgets('empty email and password doesn\'t call sign in', (WidgetTester tester) async {
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    // create a LoginPage
+    LoginScreen loginPage = const LoginScreen();
+    // add it to the widget tester
+    await tester.pumpWidget(loginPage);
+
+    // tap on the login button
+    Finder loginButton = find.byKey(const Key('login'));
+    await tester.tap(loginButton);
+
+    // 'pump' the tester again. This causes the widget to rebuild
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // check that the hint text is empty
+    Finder hintText = find.byKey(const Key('hint'));
+    expect(hintText.toString().contains(''), true);
   });
 }

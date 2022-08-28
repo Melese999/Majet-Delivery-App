@@ -12,7 +12,7 @@ import 'package:food_delivery_app/services/restpass.dart';
 import 'package:food_delivery_app/services/user.dart'; 
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key,}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();

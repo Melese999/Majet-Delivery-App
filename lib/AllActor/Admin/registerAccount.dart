@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, library_private_types_in_public_api
+// ignore_for_file: camel_case_types, library_private_types_in_public_api, deprecated_member_use
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -72,53 +72,25 @@ class _registerAccountState extends State<registerAccount> {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
     final AddButton = Material(
-        elevation: 0,
-        borderRadius: BorderRadius.circular(30),
-        color: const Color(0xffF96501),
-        child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection("BankAccount")
-                .snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                print("something went wrong");
-              } else if (snapshot.hasData || snapshot.data != null) {
-                return Expanded(
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: snapshot.data?.docs.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          QueryDocumentSnapshot<Object?>? documentSnapshot =
-                              snapshot.data?.docs[index];
-                          return MaterialButton(
-                            onPressed: () {
-                              double balance = double.parse(balamce.text);
-                              if (documentSnapshot!['AccountNumber'] !=
-                                  (int.parse(Account.text))) {
-                                firestore.add({
-                                  'AccountName': Customername.text,
-                                  'AccountNumber': int.parse(Account.text),
-                                  'Balance': balance
-                                });
-                              } else {
-                                String texts =
-                                    "Account number ${documentSnapshot['AccountNumber']} is taken by another person";
-                                showAlertDialog(context, texts);
-                              }
-                            },
-                            child: const Text(
-                              "Add",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 25,
-                                  fontFamily: "TimenewsRoman"),
-                            ),
-                          );
-                        }));
-              }
-              return Container();
-            }));
+      elevation: 0,
+      borderRadius: BorderRadius.circular(30),
+      color: const Color(0xffF96501),
+      child: MaterialButton(
+        onPressed: () async {
+          await FirebaseFirestore.instance.collection("bankAccount").add({
+            'accountName':Customername,
+            'accountNumber':Account,
+            'accountBalance':balamce
+          });
+        },
+        child: const Text(
+          "register",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.black, fontSize: 25, fontFamily: "TimenewsRoman"),
+        ),
+      ),
+    );
 
     return Scaffold(
         appBar: AppBar(
@@ -145,7 +117,7 @@ class _registerAccountState extends State<registerAccount> {
                                 children: <Widget>[
                                   const SizedBox(
                                       height: 25,
-                                      child: Text("payment",
+                                      child: Text("Account",
                                           style: TextStyle(
                                               color: Color(0xffF96501),
                                               fontWeight: FontWeight.bold,
@@ -161,10 +133,10 @@ class _registerAccountState extends State<registerAccount> {
                                 ])))))));
   }
 
-  showAlertDialog(BuildContext context,String text) {
+  showAlertDialog(BuildContext context, String text) {
     // Create button
     Widget okButton = FlatButton(
-      child: Text("OK"),
+      child: const Text("OK"),
       onPressed: () {
         Navigator.of(context).pop();
       },
@@ -172,7 +144,7 @@ class _registerAccountState extends State<registerAccount> {
 
     // Create AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Error Occured"),
+      title: const Text("Error Occured"),
       content: Text(text),
       actions: [
         okButton,

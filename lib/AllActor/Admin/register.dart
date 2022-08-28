@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/consts/colors.dart';
+import 'package:food_delivery_app/services/Accounts.dart';
 import 'package:food_delivery_app/services/fire_auth.dart';
 import 'package:food_delivery_app/services/globalmethods.dart';
 import 'package:food_delivery_app/services/user.dart';
@@ -28,7 +29,7 @@ class _Register extends State<Register> {
   final picker = ImagePicker();
   FireAuth xx = FireAuth();
   final firestore = FirebaseFirestore.instance.collection("users");
-    var imagefile = FirebaseStorage.instance.ref().child('images.jpg');
+  var imagefile = FirebaseStorage.instance.ref().child('images.jpg');
   //final database = FirebaseDatabase.instance.ref();
   var regName = '/^[a-zA-Z]+ [a-zA-Z]+/';
   var firstNameEditingController = TextEditingController();
@@ -37,13 +38,14 @@ class _Register extends State<Register> {
   var phoneEditingController = TextEditingController();
   var restuarantEditingController = TextEditingController();
   var descriptionEditingController = TextEditingController();
+  var baccountEditingController = TextEditingController();
+  var balance = TextEditingController();
   String role = 'restuarant';
   File? _pickedImage;
   late String? url = '';
   final _formKey = GlobalKey<FormState>();
   // final FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalMethods _globalMethods = GlobalMethods();
-
 
   void _pickImageGallery() async {
     final picker = ImagePicker();
@@ -85,7 +87,6 @@ class _Register extends State<Register> {
           _globalMethods.authErrorHandle('Please pick an image', context);
         } else {
           setState(() {
-
             FirebaseAuth.instance
                 .createUserWithEmailAndPassword(
                     email: emailEditingController.text, password: 'res1234')
@@ -105,8 +106,7 @@ class _Register extends State<Register> {
         _globalMethods.authErrorHandle(error.toString(), context);
         print('error occured ${error.toString()}');
       } finally {
-        setState(() {
-        });
+        setState(() {});
       }
     }
   }
@@ -237,7 +237,27 @@ class _Register extends State<Register> {
         }
         return null;
       },
-    );     
+    );
+    final BAccount = TextFormField(
+      autofocus: false,
+      controller: phoneEditingController,
+      keyboardType: TextInputType.text,
+      textInputAction: TextInputAction.next,
+      onSaved: (value) {
+        phoneEditingController.text = value!;
+      },
+      decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.account_circle),
+          contentPadding: const EdgeInsets.fromLTRB(15, 20, 10, 10),
+          labelText: 'phone',
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter phone number';
+        }
+        return null;
+      },
+    );
     final resetButton = Material(
       elevation: 0,
       borderRadius: BorderRadius.circular(30),
@@ -248,7 +268,7 @@ class _Register extends State<Register> {
           lastNameEditingController.clear();
           emailEditingController.clear();
           restuarantEditingController.clear();
-          phoneEditingController.clear();      
+          phoneEditingController.clear();
         },
         child: const Text(
           "Clear Form",
@@ -261,7 +281,7 @@ class _Register extends State<Register> {
     final signupButton = Material(
       elevation: 0,
       borderRadius: BorderRadius.circular(30),
-      color: const Color(0xffF96501),      
+      color: const Color(0xffF96501),
       child: MaterialButton(
         onPressed: _submitForm,
         child: const Text(
@@ -287,7 +307,7 @@ class _Register extends State<Register> {
         body: Stack(children: [
           SingleChildScrollView(
               child: Column(
-            children: [  
+            children: [
               const Padding(
                   padding: EdgeInsets.fromLTRB(
                       50, 0, 50, 25), //apply padding to all four sides
@@ -415,7 +435,7 @@ class _Register extends State<Register> {
                                 emailfield,
                                 const SizedBox(height: 25),
                                 phonefield,
-                                const SizedBox(height: 25),                                 
+                                const SizedBox(height: 25),
                                 Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -430,6 +450,7 @@ class _Register extends State<Register> {
           ))
         ]));
   }
+
   Future<void> saveRestuarantToDb(
       String firstname,
       String lastname,
@@ -454,12 +475,19 @@ class _Register extends State<Register> {
       "description": description,
       'role': role
     });
+    await FirebaseFirestore.instance.collection('BankAccount').add({
+      'accountName': firstNameEditingController.text,
+      'accountNumber': baccountEditingController.text,
+      'accountBalance': double.parse(balance.text)
+    });
     firstNameEditingController.clear();
     lastNameEditingController.clear();
     phoneEditingController.clear();
     restuarantEditingController.clear();
     emailEditingController.clear();
     descriptionEditingController.clear();
+    baccountEditingController.clear();
+    balance.clear();
     return;
   }
 }
