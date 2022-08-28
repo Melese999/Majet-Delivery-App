@@ -89,7 +89,7 @@ class _ViewMenu extends State<ViewMenu> {
                             },
                             child: const Text(
                               'add',
-                              style: TextStyle(color: Colors.green),
+                              style: TextStyle(color: Colors.black),
                             )),
                       ],
                     ), // your button beneath text

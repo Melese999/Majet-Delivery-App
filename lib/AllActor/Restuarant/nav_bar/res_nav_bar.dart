@@ -123,7 +123,7 @@ class _res_nav_barState extends State<res_nav_bar> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const res_feedback()));
+                          builder: (context) => const feedback()));
                 },
               ),
               const Divider(),

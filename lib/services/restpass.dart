@@ -62,9 +62,10 @@ class _resetPasswordState extends State<resetPassword> {
       child: MaterialButton(
         onPressed: () {
           if (_formkey.currentState!.validate()) {
-            userData.resetPass(emailEditingController.text);
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => LoginScreen()));
+            userData.resetPass(emailEditingController.text).then((value) => {
+               Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()))
+            });           
           }
         },
         child: const Text(

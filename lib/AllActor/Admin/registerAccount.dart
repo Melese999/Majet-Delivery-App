@@ -74,7 +74,7 @@ class _registerAccountState extends State<registerAccount> {
       color: const Color(0xffF96501),
       child: MaterialButton(
         onPressed: () async {
-          await FirebaseFirestore.instance.collection("bankAccount").add({
+          await FirebaseFirestore.instance.collection("BankAccount").add({
             'accountName': Customername.text,
             'accountNumber': Account.text,
             'accountBalance': double.parse(balamce.text)

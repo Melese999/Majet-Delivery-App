@@ -22,7 +22,7 @@ final List  pages = [
       const home(),
       const menu(),
       const res_view_order(),
-      const res_feedback(),   
+      const feedback(),   
     ];
  
   void _selectPage(int index) {

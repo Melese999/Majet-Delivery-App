@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/AllActor/Customer/payment.dart';
+
 class ViewOrder extends StatefulWidget {
   const ViewOrder({Key? key}) : super(key: key);
   @override
@@ -11,10 +12,11 @@ class ViewOrder extends StatefulWidget {
 
 class _ViewOrder extends State<ViewOrder> {
   User? check = FirebaseAuth.instance.currentUser;
-  final finalorder = FirebaseFirestore.instance.collection('PlacedOrders');
+  final finalorder = FirebaseFirestore.instance.collection('bankAccount');
   final petCollection = FirebaseFirestore.instance.collection("orders");
   TextEditingController customername = TextEditingController();
   TextEditingController account = TextEditingController();
+  double totalprice = 0.0;
   List<int> count = [
     0,
     0,
@@ -252,9 +254,23 @@ class _ViewOrder extends State<ViewOrder> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("the overall price is $AllTotal"),
             ElevatedButton(
                 onPressed: (() async {
+                  bool x = false;
+                  QuerySnapshot allPrice = await FirebaseFirestore.instance
+                      .collection("orders")
+                      .get();
+                  for (var element in allPrice.docs) {
+                    if (check?.email == element.get('customer') && x == false) {
+                      x = true;
+                      print(element.get('price') * element.get('quantity'));
+                      totalprice +=
+                          element.get('price') * element.get('quantity');
+                    }
+                    else if (check?.email == element.get('customer') &&x==true) {                      
+                      totalprice += element.get('price');
+                    }
+                  }
                   showDialog(
                       context: context,
                       builder: (context) => Dialog(
@@ -267,10 +283,10 @@ class _ViewOrder extends State<ViewOrder> {
                               child: Padding(
                                   padding: const EdgeInsets.all(5.0),
                                   child: ListView(shrinkWrap: true, children: [
-                                    const Text(
-                                      "please pay price ",
+                                    Text(
+                                      "the overall price is $totalprice",
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: Colors.black,
                                           fontSize: 25,
                                           fontWeight: FontWeight.bold,
@@ -289,7 +305,29 @@ class _ViewOrder extends State<ViewOrder> {
                                         borderRadius: BorderRadius.circular(30),
                                         child: MaterialButton(
                                           padding: const EdgeInsets.all(26),
-                                          onPressed: () {},
+                                          onPressed: () async {
+                                            QuerySnapshot snap =
+                                                await FirebaseFirestore.instance
+                                                    .collection('bankAccount')
+                                                    .get();
+                                            for (var element in snap.docs) {
+                                              if (customername.text ==
+                                                      element
+                                                          .get('accountName') &&
+                                                  account.text ==
+                                                      element.get(
+                                                          'accountNumber')) {
+                                                print('object');
+                                                double yy = element
+                                                        .get('accountBalance') -
+                                                    AllTotal;
+                                                finalorder
+                                                    .doc(element.id)
+                                                    .update(
+                                                        {'accountBalance': yy});
+                                              }
+                                            }
+                                          },
                                           child: const Text(
                                             "pay",
                                             textAlign: TextAlign.center,
@@ -300,16 +338,6 @@ class _ViewOrder extends State<ViewOrder> {
                                           ),
                                         )),
                                   ])))));
-
-                  await FirebaseFirestore.instance
-                      .collection('PlacedOrder')
-                      .doc(check!.uid)
-                      .set({'Alltotal': AllTotal}).then((value) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MakePayment()));
-                  });
                 }),
                 child: const Text("place order")),
           ],

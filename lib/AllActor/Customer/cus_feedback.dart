@@ -2,6 +2,7 @@
 // ignore_for_file: camel_case_types, library_private_types_in_public_api
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/services/fire_auth.dart';
 
@@ -13,26 +14,25 @@ class Cus_Feedback extends StatefulWidget {
 }
 
 class _Cus_FeedbackState extends State<Cus_Feedback> {
-  FireAuth xx = FireAuth();
+  User? user = FirebaseAuth.instance.currentUser;
   final firestore = FirebaseFirestore.instance.collection("Feedback");
 
   final _formkey = GlobalKey<FormState>();
-  var Customername = TextEditingController();
-  var Account = TextEditingController();
+  var contents = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final namefield = TextFormField(
+    final content = TextFormField(
       autofocus: false,
-      controller: Customername,
+      controller: contents,
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.next,
       onSaved: (value) {
-        Customername.text = value!;
+        contents.text = value!;
       },
       decoration: InputDecoration(
           prefixIcon: const Icon(Icons.account_circle),
           contentPadding: const EdgeInsets.fromLTRB(15, 20, 10, 10),
-          labelText: 'Name',
+          labelText: 'feedback',
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -41,20 +41,6 @@ class _Cus_FeedbackState extends State<Cus_Feedback> {
         return null;
       },
     );
-    final emailfield = TextFormField(
-        autofocus: false,
-        controller: Account,
-        keyboardType: TextInputType.emailAddress,
-        onSaved: (value) {
-          Account.text = value!;
-        },
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-            prefixIcon: const Icon(Icons.email),
-            contentPadding: const EdgeInsets.fromLTRB(15, 20, 10, 10),
-            labelText: "feedback",
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
     final signupButton = Material(
       elevation: 0,
       borderRadius: BorderRadius.circular(30),
@@ -64,8 +50,12 @@ class _Cus_FeedbackState extends State<Cus_Feedback> {
           if (_formkey.currentState!.validate()) {
             // If the form is valid, display a snackbar. In the real world,
             // you'd often call a server or save the information in a database.
+            firestore.doc(user?.uid).set({
+              'description':contents.text,
+              'restuarant':user?.email
+            });
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Processing Data')),
+              const SnackBar(content: Text('loading Data')),
             );
           }
         },
@@ -109,9 +99,7 @@ class _Cus_FeedbackState extends State<Cus_Feedback> {
                                               fontWeight: FontWeight.bold,
                                               fontSize: 25))),
                                   const SizedBox(height: 20),
-                                  namefield,
-                                  const SizedBox(height: 20),
-                                  emailfield,
+                                  content,
                                   const SizedBox(height: 20),
                                   signupButton
                                 ])))))));
