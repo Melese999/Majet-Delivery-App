@@ -1,10 +1,8 @@
 // ignore_for_file: camel_case_types, library_private_types_in_public_api, deprecated_member_use
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:food_delivery_app/services/fire_auth.dart';
 
 class registerAccount extends StatefulWidget {
   const registerAccount({Key? key}) : super(key: key);
@@ -12,7 +10,6 @@ class registerAccount extends StatefulWidget {
   @override
   _registerAccountState createState() => _registerAccountState();
 }
-
 class _registerAccountState extends State<registerAccount> {
   final firestore = FirebaseFirestore.instance.collection("BankAccount");
   final _formkey = GlobalKey<FormState>();
@@ -78,9 +75,9 @@ class _registerAccountState extends State<registerAccount> {
       child: MaterialButton(
         onPressed: () async {
           await FirebaseFirestore.instance.collection("bankAccount").add({
-            'accountName':Customername,
-            'accountNumber':Account,
-            'accountBalance':balamce
+            'accountName': Customername.text,
+            'accountNumber': Account.text,
+            'accountBalance': double.parse(balamce.text)
           });
         },
         child: const Text(
@@ -91,7 +88,6 @@ class _registerAccountState extends State<registerAccount> {
         ),
       ),
     );
-
     return Scaffold(
         appBar: AppBar(
             leading: IconButton(

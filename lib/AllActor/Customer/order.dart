@@ -1,10 +1,8 @@
 // ignore_for_file: non_constant_identifier_names, avoid_print, deprecated_member_use
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/AllActor/Customer/payment.dart';
-
 class ViewOrder extends StatefulWidget {
   const ViewOrder({Key? key}) : super(key: key);
   @override
@@ -15,6 +13,8 @@ class _ViewOrder extends State<ViewOrder> {
   User? check = FirebaseAuth.instance.currentUser;
   final finalorder = FirebaseFirestore.instance.collection('PlacedOrders');
   final petCollection = FirebaseFirestore.instance.collection("orders");
+  TextEditingController customername = TextEditingController();
+  TextEditingController account = TextEditingController();
   List<int> count = [
     0,
     0,
@@ -36,6 +36,40 @@ class _ViewOrder extends State<ViewOrder> {
   double AllTotal = 0.0;
   @override
   Widget build(BuildContext context) {
+    final accountfield = TextFormField(
+        autofocus: false,
+        controller: account,
+        keyboardType: TextInputType.emailAddress,
+        onSaved: (value) {
+          account.text = value!;
+        },
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+            prefixIcon: const Icon(Icons.email),
+            contentPadding: const EdgeInsets.fromLTRB(15, 20, 10, 10),
+            labelText: "Account",
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
+    final namefield = TextFormField(
+      autofocus: false,
+      controller: customername,
+      keyboardType: TextInputType.text,
+      textInputAction: TextInputAction.next,
+      onSaved: (value) {
+        customername.text = value!;
+      },
+      decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.account_circle),
+          contentPadding: const EdgeInsets.fromLTRB(15, 20, 10, 10),
+          labelText: 'Name',
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter some text';
+        }
+        return null;
+      },
+    );
     return Scaffold(
       appBar: AppBar(title: const Text('order page')),
       body: Column(children: [
@@ -221,6 +255,52 @@ class _ViewOrder extends State<ViewOrder> {
             Text("the overall price is $AllTotal"),
             ElevatedButton(
                 onPressed: (() async {
+                  showDialog(
+                      context: context,
+                      builder: (context) => Dialog(
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border:
+                                      Border.all(color: Colors.red, width: 5),
+                                  borderRadius: BorderRadius.circular(0)),
+                              child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: ListView(shrinkWrap: true, children: [
+                                    const Text(
+                                      "please pay price ",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "TimenewsRoman"),
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    namefield,
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    accountfield,
+                                    Material(
+                                        elevation: 0,
+                                        borderRadius: BorderRadius.circular(30),
+                                        child: MaterialButton(
+                                          padding: const EdgeInsets.all(26),
+                                          onPressed: () {},
+                                          child: const Text(
+                                            "pay",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: Color(0xffF96501),
+                                                fontSize: 25,
+                                                fontFamily: "TimenewsRoman"),
+                                          ),
+                                        )),
+                                  ])))));
+
                   await FirebaseFirestore.instance
                       .collection('PlacedOrder')
                       .doc(check!.uid)

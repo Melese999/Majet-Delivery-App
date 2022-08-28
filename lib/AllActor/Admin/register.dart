@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/consts/colors.dart';
-import 'package:food_delivery_app/services/Accounts.dart';
 import 'package:food_delivery_app/services/fire_auth.dart';
 import 'package:food_delivery_app/services/globalmethods.dart';
 import 'package:food_delivery_app/services/user.dart';
@@ -238,10 +237,10 @@ class _Register extends State<Register> {
         return null;
       },
     );
-    final BAccount = TextFormField(
+    final bAccount = TextFormField(
       autofocus: false,
-      controller: phoneEditingController,
-      keyboardType: TextInputType.text,
+      controller: baccountEditingController,
+      keyboardType: TextInputType.number,
       textInputAction: TextInputAction.next,
       onSaved: (value) {
         phoneEditingController.text = value!;
@@ -249,7 +248,27 @@ class _Register extends State<Register> {
       decoration: InputDecoration(
           prefixIcon: const Icon(Icons.account_circle),
           contentPadding: const EdgeInsets.fromLTRB(15, 20, 10, 10),
-          labelText: 'phone',
+          labelText: 'bank account',
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter phone number';
+        }
+        return null;
+      },
+    );
+    final balances = TextFormField(
+      autofocus: false,
+      controller: balance,
+      keyboardType: TextInputType.number,
+      textInputAction: TextInputAction.next,
+      onSaved: (value) {
+        phoneEditingController.text = value!;
+      },
+      decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.account_circle),
+          contentPadding: const EdgeInsets.fromLTRB(15, 20, 10, 10),
+          labelText: 'enter balance',
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -435,6 +454,10 @@ class _Register extends State<Register> {
                                 emailfield,
                                 const SizedBox(height: 25),
                                 phonefield,
+                                const SizedBox(height: 25),
+                                balances,
+                                const SizedBox(height: 25),
+                                bAccount,
                                 const SizedBox(height: 25),
                                 Row(
                                     mainAxisAlignment:

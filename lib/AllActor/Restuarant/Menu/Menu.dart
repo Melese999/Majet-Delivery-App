@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/AllActor/Restuarant/Menu/addMenu.dart';
- 
 
 class menu extends StatefulWidget {
   const menu({Key? key}) : super(key: key);
@@ -83,7 +82,7 @@ class _menuState extends State<menu> {
                                       documentSnapshot['imageurl'],
                                       fit: BoxFit.cover,
                                       height: 400,
-                                      width: 100), 
+                                      width: 100),
                                   leading: IconButton(
                                       icon: const Icon(Icons.edit),
                                       color: const Color.fromARGB(
@@ -96,9 +95,11 @@ class _menuState extends State<menu> {
                                         foodingredients.text =
                                             documentSnapshot['ingredients'];
                                         foodquantity.text =
-                                            documentSnapshot['quantity'].toString();
+                                            documentSnapshot['quantity']
+                                                .toString();
                                         foodprice.text =
-                                            documentSnapshot['price'].toString();
+                                            documentSnapshot['price']
+                                                .toString();
                                         showDialog(
                                             context: context,
                                             builder: (context) => Dialog(
